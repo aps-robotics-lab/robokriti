@@ -1,700 +1,794 @@
 /**
- * ============================================================
- * ROBO KRITI 2026 — MASTER HOME JAVASCRIPT
- * ============================================================
+ * =========================================================
+ * ROBO KRITI 2026
+ * FINAL HOME PAGE ENGINE
+ * =========================================================
  *
- * Features:
- * - 300-frame / 30 FPS scroll-controlled hero
+ * Responsibilities:
+ * - 300-frame scroll animation
+ * - Frame preloading
  * - Smooth frame interpolation
- * - Intelligent frame preloading
- * - Cinematic hero typography choreography
- * - Hero HUD animation
- * - Scroll progress
- * - Section reveal choreography
- * - Competition countdown
- * - Registration deadline warning
+ * - Responsive canvas rendering
+ * - Hero choreography
+ * - Registration countdown
  * - FAQ accordion
- * - Animated CTA
- * - Navigation active state
- * - Magnetic CTA interaction
- * - Reduced-motion accessibility
+ * - Navigation state
+ * - Mobile navigation
+ * - Discipline interactions
+ * - Magnetic CTA
+ * - Section reveal
+ * - Performance control
  *
- * Required structure:
- *
- * index.html
- * styles.css
- * script.js
- * home-content.js
- *
- * assets/
- * ├── awes-logo.png
- * └── frames/
- *     ├── frame_0000.webp
- *     ├── frame_0001.webp
- *     ├── ...
- *     └── frame_0299.webp
- * ============================================================
+ * =========================================================
  */
 
-(() => {
-
-  "use strict";
-
-  /* ==========================================================
-     CONFIG
-  ========================================================== */
-
-  const TOTAL_FRAMES = 300;
-
-  const FRAME_PATH =
-    "assets/frames/frame_";
-
-  const FRAME_EXTENSION =
-    ".webp";
-
-  const PAD_LENGTH = 4;
-
-  const FRAME_LERP = 0.115;
-
-  const PRELOAD_CONCURRENCY = 10;
-
-  const REDUCED_MOTION =
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+import {
+  HOME_CONTENT,
+  getFrameURL,
+  getRegistrationTimeLeft,
+  twoDigits
+} from "./home-content.js";
 
 
-  /* ==========================================================
-     DOM
-  ========================================================== */
+/* =========================================================
+   CONFIGURATION
+   ========================================================= */
 
-  const canvas =
-    document.getElementById("frameCanvas");
+const TOTAL_FRAMES =
+  HOME_CONTENT.frames.total;
 
-  const ctx =
-    canvas
-      ? canvas.getContext("2d", {
-          alpha: false,
-          desynchronized: true
-        })
-      : null;
+const FRAME_FPS =
+  HOME_CONTENT.frames.fps;
 
-  const frameNow =
-    document.getElementById("frameNow");
-
-  const progressBar =
-    document.getElementById("progressBar");
-
-  const loaderBar =
-    document.getElementById("loaderBar");
-
-  const loaderText =
-    document.getElementById("loaderText");
-
-  const preloader =
-    document.getElementById("preloader");
-
-  const hero =
-    document.querySelector(".hero");
-
-  const heroCopy =
-    document.querySelector(".hero-copy");
-
-  const heroHud =
-    document.querySelector(".hud-top");
-
-  const heroData =
-    document.querySelector(".hero-data");
-
-  const scrollCue =
-    document.querySelector(".scroll-cue");
-
-  const frameCounter =
-    document.querySelector(".frame-counter");
-
-  const daysElement =
-    document.getElementById("days");
-
-  const hoursElement =
-    document.getElementById("hours");
-
-  const minutesElement =
-    document.getElementById("minutes");
-
-  const secondsElement =
-    document.getElementById("seconds");
-
-  const countdownSection =
-    document.querySelector(".countdown-section");
-
-  const deadlineLine =
-    document.querySelector(".deadline-line");
-
-  const nav =
-    document.querySelector(".nav");
-
-  const navLinks =
-    document.querySelectorAll("nav a");
-
-  const faqItems =
-    document.querySelectorAll(".faq-item");
-
-  const magneticCTA =
-    document.querySelector(".magnetic-cta");
+const FRAME_INTERVAL =
+  1000 / FRAME_FPS;
 
 
-  /* ==========================================================
-     STATE
-  ========================================================== */
+/* =========================================================
+   DOM
+   ========================================================= */
 
-  const images =
-    new Array(TOTAL_FRAMES);
+const canvas =
+  document.getElementById("frameCanvas");
 
-  let loadedFrames = 0;
+const ctx =
+  canvas?.getContext("2d", {
+    alpha: false,
+    desynchronized: true
+  });
 
-  let loadCursor = 0;
+const preloader =
+  document.getElementById("preloader");
 
-  let currentFrame = 0;
+const loaderBar =
+  document.getElementById("loaderBar");
 
-  let targetFrame = 0;
+const loaderText =
+  document.getElementById("loaderText");
 
-  let devicePixelRatio =
-    Math.min(window.devicePixelRatio || 1, 2);
+const frameNow =
+  document.getElementById("frameNow");
 
-  let ticking = false;
+const progressBar =
+  document.getElementById("progressBar");
 
-  let scrollAnimationFrame = null;
+const hero =
+  document.getElementById("hero");
 
-  let pageReady = false;
+const heroCopy =
+  document.querySelector(".hero-copy");
+
+const heroHud =
+  document.querySelector(".hero-hud");
+
+const heroData =
+  document.querySelector(".hero-data");
+
+const scrollCue =
+  document.querySelector(".scroll-cue");
+
+const frameCounter =
+  document.querySelector(".frame-counter");
+
+const nav =
+  document.getElementById("mainNav");
+
+const menuButton =
+  document.getElementById("menuButton");
+
+const mobileMenu =
+  document.getElementById("mobileMenu");
 
 
-  /* ==========================================================
-     HELPERS
-  ========================================================== */
+/* =========================================================
+   SAFETY CHECK
+   ========================================================= */
 
-  const clamp = (
-    value,
-    min = 0,
-    max = 1
-  ) => {
+if (!canvas || !ctx || !hero) {
 
-    return Math.max(
-      min,
-      Math.min(max, value)
+  console.error(
+    "Robo Kriti: Required Home-page elements are missing."
+  );
+
+}
+
+
+/* =========================================================
+   FRAME STATE
+   ========================================================= */
+
+const images =
+  new Array(TOTAL_FRAMES);
+
+let loadedFrames = 0;
+
+let requestedFrame = 0;
+
+let currentFrame = 0;
+
+let targetFrame = 0;
+
+let lastDrawnFrame = -1;
+
+let lastFrameDrawTime = 0;
+
+let loadingStarted = false;
+
+let animationStarted = false;
+
+let ticking = false;
+
+let resizeQueued = false;
+
+let scrollQueued = false;
+
+
+/* =========================================================
+   DEVICE / CANVAS
+   ========================================================= */
+
+let dpr =
+  Math.min(
+    window.devicePixelRatio || 1,
+    2
+  );
+
+let viewportWidth =
+  window.innerWidth;
+
+let viewportHeight =
+  window.innerHeight;
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+const clamp = (
+  value,
+  min = 0,
+  max = 1
+) => {
+
+  return Math.max(
+    min,
+    Math.min(max, value)
+  );
+
+};
+
+
+const lerp = (
+  a,
+  b,
+  amount
+) => {
+
+  return a +
+    (b - a) *
+    amount;
+
+};
+
+
+const easeOutCubic = value => {
+
+  return 1 -
+    Math.pow(
+      1 - value,
+      3
     );
 
-  };
+};
 
 
-  const lerp = (
-    start,
-    end,
-    amount
-  ) => {
+const easeInOut = value => {
 
-    return start +
-      (end - start) *
-      amount;
+  return value < 0.5
 
-  };
+    ? 4 * value * value * value
+
+    : 1 -
+      Math.pow(
+        -2 * value + 2,
+        3
+      ) / 2;
+
+};
 
 
-  const frameURL = (
-    index
-  ) => {
+/* =========================================================
+   CANVAS RESIZE
+   ========================================================= */
 
-    return (
-      FRAME_PATH +
-      String(index)
-        .padStart(PAD_LENGTH, "0") +
-      FRAME_EXTENSION
+function resizeCanvas() {
+
+  viewportWidth =
+    window.innerWidth;
+
+  viewportHeight =
+    window.innerHeight;
+
+  dpr =
+    Math.min(
+      window.devicePixelRatio || 1,
+      2
     );
 
-  };
+
+  canvas.width =
+    Math.round(
+      viewportWidth * dpr
+    );
+
+  canvas.height =
+    Math.round(
+      viewportHeight * dpr
+    );
 
 
-  const setStyle = (
-    element,
-    property,
-    value
-  ) => {
+  canvas.style.width =
+    `${viewportWidth}px`;
 
-    if (!element) return;
-
-    element.style[property] = value;
-
-  };
+  canvas.style.height =
+    `${viewportHeight}px`;
 
 
-  /* ==========================================================
-     CANVAS RESIZE
-  ========================================================== */
+  ctx.setTransform(
+    dpr,
+    0,
+    0,
+    dpr,
+    0,
+    0
+  );
 
-  function resizeCanvas() {
 
-    if (!canvas || !ctx) return;
+  lastDrawnFrame = -1;
 
-    devicePixelRatio =
-      Math.min(
-        window.devicePixelRatio || 1,
-        2
-      );
+  drawFrame(
+    currentFrame,
+    true
+  );
 
-    const width =
-      window.innerWidth;
+}
 
-    const height =
-      window.innerHeight;
 
-    canvas.width =
-      Math.round(
-        width *
-        devicePixelRatio
-      );
+/* =========================================================
+   FRAME DRAWING
+   ========================================================= */
 
-    canvas.height =
-      Math.round(
-        height *
-        devicePixelRatio
-      );
+function drawFrame(
+  frameIndex,
+  force = false
+) {
 
-    canvas.style.width =
-      width + "px";
+  if (!canvas || !ctx) return;
 
-    canvas.style.height =
-      height + "px";
 
-    drawFrame(currentFrame);
+  const safeIndex =
+    clamp(
+      Math.round(frameIndex),
+      0,
+      TOTAL_FRAMES - 1
+    );
+
+
+  const image =
+    images[safeIndex];
+
+
+  if (
+    !image ||
+    !image.complete ||
+    image.naturalWidth === 0
+  ) {
+
+    return;
 
   }
 
 
-  /* ==========================================================
-     DRAW FRAME
-  ========================================================== */
+  const now =
+    performance.now();
 
-  function drawFrame(
-    frameIndex
+
+  /*
+   * Prevent unnecessary canvas redraws.
+   */
+
+  if (
+    !force &&
+    safeIndex === lastDrawnFrame
   ) {
 
-    if (
-      !canvas ||
-      !ctx
-    ) {
-      return;
-    }
+    return;
 
-    const safeIndex =
-      Math.max(
+  }
+
+
+  /*
+   * Keep visual frame updates close
+   * to the original 30 FPS sequence.
+   */
+
+  if (
+    !force &&
+    now - lastFrameDrawTime <
+    FRAME_INTERVAL
+  ) {
+
+    return;
+
+  }
+
+
+  lastFrameDrawTime =
+    now;
+
+
+  lastDrawnFrame =
+    safeIndex;
+
+
+  /*
+   * Canvas is already scaled by DPR.
+   * Reset to CSS-pixel coordinate system.
+   */
+
+  ctx.save();
+
+  ctx.setTransform(
+    dpr,
+    0,
+    0,
+    dpr,
+    0,
+    0
+  );
+
+
+  /*
+   * Background.
+   */
+
+  ctx.fillStyle =
+    "#05070b";
+
+  ctx.fillRect(
+    0,
+    0,
+    viewportWidth,
+    viewportHeight
+  );
+
+
+  /*
+   * Cinematic cover calculation.
+   */
+
+  const imageRatio =
+    image.naturalWidth /
+    image.naturalHeight;
+
+  const viewportRatio =
+    viewportWidth /
+    viewportHeight;
+
+
+  let drawWidth;
+  let drawHeight;
+
+
+  if (
+    imageRatio >
+    viewportRatio
+  ) {
+
+    drawHeight =
+      viewportHeight;
+
+    drawWidth =
+      drawHeight *
+      imageRatio;
+
+  } else {
+
+    drawWidth =
+      viewportWidth;
+
+    drawHeight =
+      drawWidth /
+      imageRatio;
+
+  }
+
+
+  /*
+   * Tiny cinematic scaling.
+   */
+
+  const scrollProgress =
+    getHeroProgress();
+
+
+  const cinematicScale =
+    1 +
+    scrollProgress * 0.025;
+
+
+  drawWidth *=
+    cinematicScale;
+
+  drawHeight *=
+    cinematicScale;
+
+
+  const x =
+    (viewportWidth -
+      drawWidth) / 2;
+
+
+  const y =
+    (viewportHeight -
+      drawHeight) / 2;
+
+
+  ctx.drawImage(
+    image,
+    x,
+    y,
+    drawWidth,
+    drawHeight
+  );
+
+
+  ctx.restore();
+
+
+  /*
+   * Frame indicator.
+   */
+
+  if (frameNow) {
+
+    frameNow.textContent =
+      String(
+        safeIndex + 1
+      ).padStart(3, "0");
+
+  }
+
+}
+
+
+/* =========================================================
+   HERO PROGRESS
+   ========================================================= */
+
+function getHeroProgress() {
+
+  if (!hero) return 0;
+
+
+  const heroTop =
+    hero.offsetTop;
+
+
+  const heroHeight =
+    hero.offsetHeight;
+
+
+  const scrollDistance =
+    Math.max(
+      1,
+      heroHeight -
+      viewportHeight
+    );
+
+
+  return clamp(
+    (
+      window.scrollY -
+      heroTop
+    ) /
+    scrollDistance
+  );
+
+}
+
+
+/* =========================================================
+   HERO CHOREOGRAPHY
+   ========================================================= */
+
+function updateHero() {
+
+  if (!hero) return;
+
+
+  const progress =
+    getHeroProgress();
+
+
+  /*
+   * Frame target.
+   */
+
+  targetFrame =
+    progress *
+    (TOTAL_FRAMES - 1);
+
+
+  /*
+   * Vertical progress line.
+   */
+
+  if (progressBar) {
+
+    progressBar.style.height =
+      `${progress * 100}%`;
+
+  }
+
+
+  /*
+   * Hero typography exit.
+   */
+
+  if (heroCopy) {
+
+    const copyOut =
+      clamp(
+        progress / 0.30
+      );
+
+
+    const translateY =
+      lerp(
         0,
-        Math.min(
-          TOTAL_FRAMES - 1,
-          Math.round(frameIndex)
+        -55,
+        easeOutCubic(
+          copyOut
         )
       );
 
-    const image =
-      images[safeIndex];
-
-    if (
-      !image ||
-      !image.complete ||
-      !image.naturalWidth
-    ) {
-      return;
-    }
-
-    const canvasWidth =
-      canvas.width;
-
-    const canvasHeight =
-      canvas.height;
-
-    ctx.fillStyle =
-      "#05070b";
-
-    ctx.fillRect(
-      0,
-      0,
-      canvasWidth,
-      canvasHeight
-    );
-
-    /*
-     * Cover scaling.
-     *
-     * This keeps the 16:9 sequence cinematic
-     * on desktop, tablet and mobile.
-     */
 
     const scale =
-      Math.max(
-        canvasWidth /
-          image.naturalWidth,
-
-        canvasHeight /
-          image.naturalHeight
-      );
-
-    const width =
-      image.naturalWidth *
-      scale;
-
-    const height =
-      image.naturalHeight *
-      scale;
-
-    const x =
-      (canvasWidth - width) /
-      2;
-
-    const y =
-      (canvasHeight - height) /
-      2;
-
-    ctx.drawImage(
-      image,
-      x,
-      y,
-      width,
-      height
-    );
-
-    if (frameNow) {
-
-      frameNow.textContent =
-        String(
-          safeIndex + 1
-        ).padStart(3, "0");
-
-    }
-
-  }
-
-
-  /* ==========================================================
-     HERO SCROLL PROGRESS
-  ========================================================== */
-
-  function updateHeroProgress() {
-
-    if (!hero) return;
-
-    const start =
-      hero.offsetTop;
-
-    const distance =
-      Math.max(
+      lerp(
         1,
-        hero.offsetHeight -
-        window.innerHeight
+        0.955,
+        copyOut
       );
 
-    const scrollPosition =
-      window.scrollY -
-      start;
 
-    const progress =
+    heroCopy.style.transform =
+      `translate3d(
+        0,
+        calc(-50% + ${translateY}px),
+        0
+      ) scale(${scale})`;
+
+
+    heroCopy.style.opacity =
+      lerp(
+        1,
+        0.06,
+        copyOut
+      );
+
+  }
+
+
+  /*
+   * HUD slowly disappears.
+   */
+
+  if (heroHud) {
+
+    const hudOut =
       clamp(
-        scrollPosition /
-        distance
+        (progress - 0.10) /
+        0.30
       );
 
-    /*
-     * Convert scroll progress
-     * into frame number.
-     */
 
-    targetFrame =
-      progress *
-      (TOTAL_FRAMES - 1);
-
-
-    /* -----------------------------------------------
-       Vertical progress indicator
-    ------------------------------------------------ */
-
-    if (progressBar) {
-
-      progressBar.style.height =
-        `${progress * 100}%`;
-
-    }
-
-
-    /* -----------------------------------------------
-       Hero typography choreography
-    ------------------------------------------------ */
-
-    if (heroCopy) {
-
-      const textOut =
-        clamp(
-          progress /
-          0.30
-        );
-
-      const translateY =
-        -50 -
-        progress * 24;
-
-      const scale =
-        1 -
-        progress * 0.045;
-
-      heroCopy.style.transform =
-        `translate3d(0, ${translateY}%, 0)
-         scale(${scale})`;
-
-      heroCopy.style.opacity =
-        1 -
-        textOut * 0.92;
-
-    }
-
-
-    /* -----------------------------------------------
-       HUD fade
-    ------------------------------------------------ */
-
-    if (heroHud) {
-
-      const hudOut =
-        clamp(
-          (progress - 0.12) /
-          0.30
-        );
-
-      heroHud.style.opacity =
-        1 -
-        hudOut * 0.72;
-
-    }
-
-
-    /* -----------------------------------------------
-       Event information movement
-    ------------------------------------------------ */
-
-    if (heroData) {
-
-      heroData.style.transform =
-        `translate3d(
-          0,
-          ${progress * 28}px,
-          0
-        )`;
-
-      heroData.style.opacity =
-        1 -
-        clamp(
-          (progress - 0.35) /
-          0.35
-        ) *
-        0.75;
-
-    }
-
-
-    /* -----------------------------------------------
-       Scroll cue
-    ------------------------------------------------ */
-
-    if (scrollCue) {
-
-      scrollCue.style.opacity =
-        1 -
-        clamp(
-          progress /
-          0.16
-        );
-
-    }
-
-
-    /* -----------------------------------------------
-       Frame counter
-    ------------------------------------------------ */
-
-    if (frameCounter) {
-
-      frameCounter.style.opacity =
-        0.45 +
-        clamp(progress * 0.8);
-
-    }
+    heroHud.style.opacity =
+      lerp(
+        1,
+        0.22,
+        hudOut
+      );
 
   }
 
 
-  /* ==========================================================
-     SECTION CHOREOGRAPHY
-  ========================================================== */
+  /*
+   * Event data moves subtly.
+   */
 
-  function revealSections() {
+  if (heroData) {
 
-    const sections =
-      document.querySelectorAll(
-        ".mission, .battle, .countdown-section, .messages, .faq-section, .register, .final-cta"
+    const dataProgress =
+      clamp(
+        (progress - 0.25) /
+        0.40
       );
 
-    sections.forEach(section => {
 
-      const rect =
-        section.getBoundingClientRect();
+    heroData.style.transform =
+      `translate3d(
+        0,
+        ${dataProgress * 28}px,
+        0
+      )`;
 
-      const sectionCenter =
-        rect.top +
-        rect.height * 0.25;
 
-      const viewportCenter =
-        window.innerHeight * 0.62;
-
-      const distance =
-        Math.abs(
-          sectionCenter -
-          viewportCenter
-        );
-
-      const amount =
-        clamp(
-          1 -
-          distance /
-          (window.innerHeight * 0.9)
-        );
-
-      /*
-       * CSS variable can also be used
-       * for additional effects.
-       */
-
-      section.style.setProperty(
-        "--reveal",
-        amount.toFixed(3)
+    heroData.style.opacity =
+      lerp(
+        1,
+        0.20,
+        dataProgress
       );
-
-      /*
-       * Reduced motion:
-       * no transform choreography.
-       */
-
-      if (REDUCED_MOTION) {
-
-        section.style.transform =
-          "none";
-
-        section.style.opacity =
-          "1";
-
-        return;
-
-      }
-
-      const translate =
-        (1 - amount) *
-        24;
-
-      section.style.transform =
-        `translate3d(
-          0,
-          ${translate}px,
-          0
-        )`;
-
-      section.style.opacity =
-        (
-          0.62 +
-          amount * 0.38
-        ).toFixed(3);
-
-    });
 
   }
 
 
-  /* ==========================================================
-     FRAME ANIMATION
-  ========================================================== */
+  /*
+   * Scroll cue disappears quickly.
+   */
 
-  function animateFrames() {
+  if (scrollCue) {
 
-    if (REDUCED_MOTION) {
+    scrollCue.style.opacity =
+      1 -
+      clamp(
+        progress / 0.15
+      );
 
-      currentFrame =
-        targetFrame;
+  }
 
-    } else {
 
-      currentFrame =
-        lerp(
-          currentFrame,
-          targetFrame,
-          FRAME_LERP
-        );
+  /*
+   * Frame counter becomes stronger.
+   */
 
-      if (
-        Math.abs(
-          targetFrame -
-          currentFrame
-        ) < 0.025
-      ) {
+  if (frameCounter) {
 
-        currentFrame =
-          targetFrame;
+    frameCounter.style.opacity =
+      0.35 +
+      progress * 0.65;
 
-      }
+  }
 
-    }
+}
 
-    drawFrame(
-      currentFrame
+
+/* =========================================================
+   FRAME ANIMATION LOOP
+   ========================================================= */
+
+function animationLoop() {
+
+  currentFrame =
+    lerp(
+      currentFrame,
+      targetFrame,
+      0.14
     );
 
-    requestAnimationFrame(
-      animateFrames
-    );
+
+  if (
+    Math.abs(
+      currentFrame -
+      targetFrame
+    ) < 0.025
+  ) {
+
+    currentFrame =
+      targetFrame;
 
   }
 
 
-  /* ==========================================================
-     PRELOADER
-  ========================================================== */
+  drawFrame(
+    currentFrame
+  );
 
-  function updateLoader() {
 
-    if (!loaderBar) return;
+  requestAnimationFrame(
+    animationLoop
+  );
 
-    const percentage =
-      Math.round(
-        (
-          loadedFrames /
-          TOTAL_FRAMES
-        ) * 100
-      );
+}
+
+
+/* =========================================================
+   PRELOADER
+   ========================================================= */
+
+function updateLoader() {
+
+  const percentage =
+    Math.round(
+      loadedFrames /
+      TOTAL_FRAMES *
+      100
+    );
+
+
+  if (loaderBar) {
 
     loaderBar.style.width =
       `${percentage}%`;
 
-    if (loaderText) {
-
-      loaderText.textContent =
-        `INITIALIZING ARENA ${String(
-          percentage
-        ).padStart(2, "0")}%`;
-
-    }
-
   }
 
 
-  function finishPreloader() {
+  if (loaderText) {
 
-    pageReady = true;
+    loaderText.textContent =
+      `INITIALIZING ARENA ${String(
+        percentage
+      ).padStart(2, "0")}%`;
 
-    drawFrame(0);
+  }
 
-    if (!preloader) return;
+}
+
+
+/* =========================================================
+   HIDE PRELOADER
+   ========================================================= */
+
+function finishLoading() {
+
+  if (animationStarted)
+    return;
+
+
+  animationStarted =
+    true;
+
+
+  drawFrame(
+    0,
+    true
+  );
+
+
+  /*
+   * Give the browser one frame to
+   * display the first image cleanly.
+   */
+
+  requestAnimationFrame(() => {
 
     setTimeout(() => {
+
+      if (!preloader)
+        return;
+
 
       preloader.style.opacity =
         "0";
@@ -702,505 +796,780 @@
       preloader.style.visibility =
         "hidden";
 
-      preloader.style.pointerEvents =
-        "none";
 
-      document.body.classList.add(
-        "page-ready"
-      );
+      setTimeout(() => {
 
-    }, 400);
+        preloader.style.display =
+          "none";
 
-  }
+      }, 650);
 
+    }, 350);
 
-  /* ==========================================================
-     LOAD FRAMES
-  ========================================================== */
+  });
 
-  function loadFrames() {
-
-    let active =
-      0;
-
-    function loadNext() {
-
-      while (
-        active <
-          PRELOAD_CONCURRENCY &&
-        loadCursor <
-          TOTAL_FRAMES
-      ) {
-
-        const index =
-          loadCursor++;
-
-        active++;
-
-        const image =
-          new Image();
-
-        image.decoding =
-          "async";
-
-        image.onload =
-          () => {
-
-            loadedFrames++;
-
-            active--;
-
-            updateLoader();
-
-            /*
-             * First frame becomes available
-             * immediately instead of waiting for
-             * all 300 frames.
-             */
-
-            if (
-              index === 0
-            ) {
-
-              drawFrame(0);
-
-            }
-
-            if (
-              loadedFrames >=
-              TOTAL_FRAMES
-            ) {
-
-              finishPreloader();
-
-            }
-
-            loadNext();
-
-          };
+}
 
 
-        image.onerror =
-          () => {
+/* =========================================================
+   FRAME LOADING
+   ========================================================= */
 
-            /*
-             * Don't freeze the entire site
-             * if one frame fails.
-             */
+function loadFrames() {
 
-            loadedFrames++;
-
-            active--;
-
-            updateLoader();
-
-            if (
-              loadedFrames >=
-              TOTAL_FRAMES
-            ) {
-
-              finishPreloader();
-
-            }
-
-            loadNext();
-
-          };
+  if (loadingStarted)
+    return;
 
 
-        image.src =
-          frameURL(index);
-
-        images[index] =
-          image;
-
-      }
-
-    }
-
-    loadNext();
-
-  }
-
-
-  /* ==========================================================
-     COUNTDOWN
-  ========================================================== */
-
-  /*
-   * Event date:
-   *
-   * 03 September 2026
-   *
-   * IST = UTC +05:30
-   */
-
-  const EVENT_DATE =
-    new Date(
-      "2026-09-03T00:00:00+05:30"
-    ).getTime();
+  loadingStarted =
+    true;
 
 
   /*
-   * Registration deadline:
-   *
-   * 01 September 2026
+   * First frame gets priority.
    */
 
-  const REGISTRATION_DEADLINE =
-    new Date(
-      "2026-09-01T23:59:59+05:30"
-    ).getTime();
+  loadSingleFrame(0);
 
 
-  function setCountdownValue(
-    element,
-    value
-  ) {
+  /*
+   * Then load remaining frames
+   * in controlled batches.
+   */
 
-    if (!element) return;
+  let cursor = 1;
 
-    element.textContent =
-      String(value).padStart(
-        2,
-        "0"
+  const batchSize =
+    8;
+
+
+  function loadBatch() {
+
+    const end =
+      Math.min(
+        cursor + batchSize,
+        TOTAL_FRAMES
       );
 
-  }
 
-
-  function updateCountdown() {
-
-    const now =
-      Date.now();
-
-    let difference =
-      EVENT_DATE -
-      now;
-
-    if (
-      difference < 0
+    while (
+      cursor < end
     ) {
 
-      difference = 0;
+      loadSingleFrame(
+        cursor
+      );
+
+      cursor++;
 
     }
 
 
-    const days =
-      Math.floor(
-        difference /
-        (1000 * 60 * 60 * 24)
-      );
-
-
-    const hours =
-      Math.floor(
-        (
-          difference /
-          (1000 * 60 * 60)
-        ) % 24
-      );
-
-
-    const minutes =
-      Math.floor(
-        (
-          difference /
-          (1000 * 60)
-        ) % 60
-      );
-
-
-    const seconds =
-      Math.floor(
-        (
-          difference /
-          1000
-        ) % 60
-      );
-
-
-    setCountdownValue(
-      daysElement,
-      days
-    );
-
-    setCountdownValue(
-      hoursElement,
-      hours
-    );
-
-    setCountdownValue(
-      minutesElement,
-      minutes
-    );
-
-    setCountdownValue(
-      secondsElement,
-      seconds
-    );
-
-
-    /*
-     * Registration deadline state.
-     */
-
     if (
-      now >
-      REGISTRATION_DEADLINE
+      cursor <
+      TOTAL_FRAMES
     ) {
-
-      document.body.classList.add(
-        "registration-closed"
-      );
-
-      if (deadlineLine) {
-
-        deadlineLine.innerHTML =
-          `REGISTRATION <span>CLOSED</span>`;
-
-      }
-
-    } else {
-
-      const remaining =
-        REGISTRATION_DEADLINE -
-        now;
 
       /*
-       * Less than 48 hours:
-       * activate FINAL CALL mode.
+       * Yield to browser so the page
+       * remains responsive while loading.
+       */
+
+      setTimeout(
+        loadBatch,
+        0
+      );
+
+    }
+
+  }
+
+
+  loadBatch();
+
+}
+
+
+/* =========================================================
+   LOAD ONE FRAME
+   ========================================================= */
+
+function loadSingleFrame(index) {
+
+  const image =
+    new Image();
+
+
+  image.decoding =
+    "async";
+
+
+  image.loading =
+    "eager";
+
+
+  image.onload =
+    () => {
+
+      images[index] =
+        image;
+
+
+      loadedFrames++;
+
+      updateLoader();
+
+
+      /*
+       * Draw first frame immediately.
        */
 
       if (
-        remaining <=
-        48 * 60 * 60 * 1000
+        index === 0
       ) {
 
-        document.body.classList.add(
-          "final-call"
+        drawFrame(
+          0,
+          true
         );
 
-        if (deadlineLine) {
+      }
 
-          deadlineLine.innerHTML =
-            `05 // FINAL CALL <span>01 SEP 2026</span>`;
 
-        }
+      if (
+        loadedFrames >=
+        TOTAL_FRAMES
+      ) {
+
+        finishLoading();
 
       }
+
+    };
+
+
+  image.onerror =
+    () => {
+
+      console.warn(
+        `Robo Kriti: Unable to load frame ${index}`
+      );
+
+
+      /*
+       * Count failed frames so
+       * one broken image doesn't
+       * permanently lock the loader.
+       */
+
+      loadedFrames++;
+
+      updateLoader();
+
+
+      if (
+        loadedFrames >=
+        TOTAL_FRAMES
+      ) {
+
+        finishLoading();
+
+      }
+
+    };
+
+
+  image.src =
+    getFrameURL(index);
+
+}
+
+
+/* =========================================================
+   SECTION REVEAL
+   ========================================================= */
+
+function revealSections() {
+
+  const sections =
+    document.querySelectorAll(
+      ".mission, .battle, .countdown-section, .messages, .faq-section, .final-cta"
+    );
+
+
+  sections.forEach(
+    section => {
+
+      const rect =
+        section.getBoundingClientRect();
+
+
+      const trigger =
+        viewportHeight *
+        0.78;
+
+
+      const distance =
+        trigger -
+        rect.top;
+
+
+      const amount =
+        clamp(
+          distance /
+          (viewportHeight *
+            0.75)
+        );
+
+
+      const eased =
+        easeOutCubic(
+          amount
+        );
+
+
+      section.style.setProperty(
+        "--reveal",
+        eased.toFixed(3)
+      );
+
+
+      section.style.transform =
+        `translate3d(
+          0,
+          ${(1 - eased) * 22}px,
+          0
+        )`;
+
+
+      section.style.opacity =
+        (
+          0.58 +
+          eased * 0.42
+        ).toFixed(3);
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   NAVIGATION ACTIVE STATE
+   ========================================================= */
+
+function updateNavigation() {
+
+  const sections =
+    document.querySelectorAll(
+      "main section[id]"
+    );
+
+
+  const links =
+    document.querySelectorAll(
+      ".nav-links a[data-nav]"
+    );
+
+
+  let active =
+    "";
+
+
+  sections.forEach(
+    section => {
+
+      const rect =
+        section.getBoundingClientRect();
+
+
+      if (
+        rect.top <=
+        viewportHeight * 0.35
+      ) {
+
+        active =
+          section.id;
+
+      }
+
+    }
+  );
+
+
+  links.forEach(
+    link => {
+
+      const navTarget =
+        link.dataset.nav;
+
+
+      link.classList.toggle(
+        "active",
+        navTarget === active
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   MOBILE NAVIGATION
+   ========================================================= */
+
+function closeMobileMenu() {
+
+  if (!mobileMenu)
+    return;
+
+
+  mobileMenu.classList.remove(
+    "open"
+  );
+
+
+  mobileMenu.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  if (menuButton) {
+
+    menuButton.classList.remove(
+      "open"
+    );
+
+
+    menuButton.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+  }
+
+}
+
+
+function toggleMobileMenu() {
+
+  if (!mobileMenu)
+    return;
+
+
+  const isOpen =
+    mobileMenu.classList.contains(
+      "open"
+    );
+
+
+  if (isOpen) {
+
+    closeMobileMenu();
+
+  } else {
+
+    mobileMenu.classList.add(
+      "open"
+    );
+
+
+    mobileMenu.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+
+    if (menuButton) {
+
+      menuButton.classList.add(
+        "open"
+      );
+
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        "true"
+      );
 
     }
 
   }
 
-
-  /* ==========================================================
-     FAQ ACCORDION
-  ========================================================== */
-
-  function initFAQ() {
-
-    if (!faqItems.length) return;
-
-    faqItems.forEach(
-      (item, index) => {
-
-        item.setAttribute(
-          "aria-expanded",
-          "false"
-        );
-
-        item.addEventListener(
-          "click",
-          () => {
-
-            const isOpen =
-              item.classList.contains(
-                "open"
-              );
+}
 
 
-            /*
-             * Close all other FAQ items.
-             */
+/* =========================================================
+   FAQ
+   ========================================================= */
 
-            faqItems.forEach(
-              other => {
+function initFAQ() {
 
-                other.classList.remove(
-                  "open"
-                );
+  const items =
+    document.querySelectorAll(
+      ".faq-item"
+    );
+
+
+  items.forEach(
+    item => {
+
+      item.addEventListener(
+        "click",
+        () => {
+
+          const currentlyOpen =
+            item.getAttribute(
+              "aria-expanded"
+            ) === "true";
+
+
+          /*
+           * Close all others.
+           */
+
+          items.forEach(
+            other => {
+
+              if (
+                other !== item
+              ) {
 
                 other.setAttribute(
                   "aria-expanded",
                   "false"
                 );
 
+                other.classList.remove(
+                  "open"
+                );
+
               }
-            );
-
-
-            /*
-             * Open selected item.
-             */
-
-            if (!isOpen) {
-
-              item.classList.add(
-                "open"
-              );
-
-              item.setAttribute(
-                "aria-expanded",
-                "true"
-              );
 
             }
-
-          }
-        );
-
-      }
-    );
-
-  }
+          );
 
 
-  /* ==========================================================
-     NAVIGATION
-  ========================================================== */
+          /*
+           * Toggle selected item.
+           */
 
-  function updateNavigation() {
+          item.setAttribute(
+            "aria-expanded",
+            String(
+              !currentlyOpen
+            )
+          );
 
-    if (!nav) return;
 
-    if (
-      window.scrollY >
-      40
-    ) {
+          item.classList.toggle(
+            "open",
+            !currentlyOpen
+          );
 
-      nav.classList.add(
-        "scrolled"
+        }
       );
 
-    } else {
+    }
+  );
 
-      nav.classList.remove(
-        "scrolled"
+}
+
+
+/* =========================================================
+   DISCIPLINE INTERACTION
+   ========================================================= */
+
+function initDisciplines() {
+
+  const events =
+    document.querySelectorAll(
+      ".discipline-item"
+    );
+
+
+  events.forEach(
+    event => {
+
+      event.addEventListener(
+        "mouseenter",
+        () => {
+
+          event.classList.add(
+            "is-active"
+          );
+
+        }
+      );
+
+
+      event.addEventListener(
+        "mouseleave",
+        () => {
+
+          event.classList.remove(
+            "is-active"
+          );
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   MAGNETIC CTA
+   ========================================================= */
+
+function initMagneticCTA() {
+
+  const buttons =
+    document.querySelectorAll(
+      ".magnetic-cta"
+    );
+
+
+  /*
+   * Magnetic movement is disabled
+   * on touch devices.
+   */
+
+  const touchDevice =
+    window.matchMedia(
+      "(hover: none)"
+    ).matches;
+
+
+  if (touchDevice)
+    return;
+
+
+  buttons.forEach(
+    button => {
+
+      button.addEventListener(
+        "mousemove",
+        event => {
+
+          const rect =
+            button.getBoundingClientRect();
+
+
+          const x =
+            event.clientX -
+            rect.left -
+            rect.width / 2;
+
+
+          const y =
+            event.clientY -
+            rect.top -
+            rect.height / 2;
+
+
+          const strength =
+            0.12;
+
+
+          button.style.transform =
+            `translate3d(
+              ${x * strength}px,
+              ${y * strength}px,
+              0
+            )`;
+
+        }
+      );
+
+
+      button.addEventListener(
+        "mouseleave",
+        () => {
+
+          button.style.transform =
+            "";
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   COUNTDOWN
+   ========================================================= */
+
+function updateCountdown() {
+
+  const time =
+    getRegistrationTimeLeft();
+
+
+  const days =
+    document.getElementById(
+      "countDays"
+    );
+
+  const hours =
+    document.getElementById(
+      "countHours"
+    );
+
+  const minutes =
+    document.getElementById(
+      "countMinutes"
+    );
+
+  const seconds =
+    document.getElementById(
+      "countSeconds"
+    );
+
+
+  if (
+    time.expired
+  ) {
+
+    if (days)
+      days.textContent = "00";
+
+    if (hours)
+      hours.textContent = "00";
+
+    if (minutes)
+      minutes.textContent = "00";
+
+    if (seconds)
+      seconds.textContent = "00";
+
+
+    const clock =
+      document.getElementById(
+        "countdownClock"
+      );
+
+
+    if (clock) {
+
+      clock.classList.add(
+        "expired"
       );
 
     }
 
 
-    /*
-     * Determine active section.
-     */
-
-    const sections =
-      document.querySelectorAll(
-        "main section[id]"
-      );
-
-    let currentSection =
-      "home";
-
-    sections.forEach(
-      section => {
-
-        const rect =
-          section.getBoundingClientRect();
-
-        if (
-          rect.top <=
-          window.innerHeight *
-          0.45
-        ) {
-
-          currentSection =
-            section.id;
-
-        }
-
-      }
-    );
-
-
-    navLinks.forEach(
-      link => {
-
-        const href =
-          link.getAttribute(
-            "href"
-          );
-
-        if (
-          href ===
-          `#${currentSection}`
-        ) {
-
-          link.classList.add(
-            "active"
-          );
-
-        } else {
-
-          link.classList.remove(
-            "active"
-          );
-
-        }
-
-      }
-    );
+    return;
 
   }
 
 
-  /* ==========================================================
-     SMOOTH NAVIGATION
-  ========================================================== */
+  if (days)
+    days.textContent =
+      twoDigits(
+        time.days
+      );
 
-  function initNavigation() {
 
-    navLinks.forEach(
+  if (hours)
+    hours.textContent =
+      twoDigits(
+        time.hours
+      );
+
+
+  if (minutes)
+    minutes.textContent =
+      twoDigits(
+        time.minutes
+      );
+
+
+  if (seconds)
+    seconds.textContent =
+      twoDigits(
+        time.seconds
+      );
+
+}
+
+
+/* =========================================================
+   COUNTDOWN LOOP
+   ========================================================= */
+
+function startCountdown() {
+
+  updateCountdown();
+
+
+  setInterval(
+    updateCountdown,
+    1000
+  );
+
+}
+
+
+/* =========================================================
+   SMOOTH ANCHOR NAVIGATION
+   ========================================================= */
+
+function initAnchors() {
+
+  document
+    .querySelectorAll(
+      'a[href^="#"]'
+    )
+    .forEach(
       link => {
 
         link.addEventListener(
           "click",
           event => {
 
-            const href =
+            const targetID =
               link.getAttribute(
                 "href"
               );
 
+
             if (
-              !href ||
-              !href.startsWith("#")
+              !targetID ||
+              targetID === "#"
             ) {
 
               return;
 
             }
 
+
             const target =
               document.querySelector(
-                href
+                targetID
               );
 
-            if (!target) return;
+
+            if (!target)
+              return;
+
 
             event.preventDefault();
 
+
+            closeMobileMenu();
+
+
             target.scrollIntoView({
-              behavior:
-                REDUCED_MOTION
-                  ? "auto"
-                  : "smooth",
-              block:
-                "start"
+              behavior: "smooth",
+              block: "start"
             });
 
           }
@@ -1209,199 +1578,147 @@
       }
     );
 
+}
+
+
+/* =========================================================
+   SCROLL ENGINE
+   ========================================================= */
+
+function onScroll() {
+
+  if (scrollQueued)
+    return;
+
+
+  scrollQueued =
+    true;
+
+
+  requestAnimationFrame(
+    () => {
+
+      updateHero();
+
+      revealSections();
+
+      updateNavigation();
+
+
+      scrollQueued =
+        false;
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   RESIZE ENGINE
+   ========================================================= */
+
+function onResize() {
+
+  if (resizeQueued)
+    return;
+
+
+  resizeQueued =
+    true;
+
+
+  requestAnimationFrame(
+    () => {
+
+      resizeCanvas();
+
+      updateHero();
+
+      revealSections();
+
+
+      resizeQueued =
+        false;
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   INITIALIZATION
+   ========================================================= */
+
+function init() {
+
+  /*
+   * Canvas.
+   */
+
+  resizeCanvas();
+
+
+  /*
+   * Hero.
+   */
+
+  updateHero();
+
+
+  /*
+   * Sections.
+   */
+
+  revealSections();
+
+
+  /*
+   * Navigation.
+   */
+
+  updateNavigation();
+
+
+  /*
+   * Interactions.
+   */
+
+  initFAQ();
+
+  initDisciplines();
+
+  initMagneticCTA();
+
+  initAnchors();
+
+
+  /*
+   * Mobile menu.
+   */
+
+  if (menuButton) {
+
+    menuButton.addEventListener(
+      "click",
+      toggleMobileMenu
+    );
+
   }
 
 
-  /* ==========================================================
-     MAGNETIC CTA
-     ========================================================== */
+  if (mobileMenu) {
 
-  function initMagneticCTA() {
+    mobileMenu
+      .querySelectorAll("a")
+      .forEach(
+        link => {
 
-    if (
-      !magneticCTA ||
-      REDUCED_MOTION
-    ) {
-
-      return;
-
-    }
-
-
-    /*
-     * Disable magnetic behaviour
-     * on touch devices.
-     */
-
-    if (
-      "ontouchstart" in window
-    ) {
-
-      return;
-
-    }
-
-
-    magneticCTA.addEventListener(
-      "pointermove",
-      event => {
-
-        const rect =
-          magneticCTA.getBoundingClientRect();
-
-        const x =
-          event.clientX -
-          rect.left -
-          rect.width / 2;
-
-        const y =
-          event.clientY -
-          rect.top -
-          rect.height / 2;
-
-        const moveX =
-          clamp(
-            x / 5,
-            -12,
-            12
+          link.addEventListener(
+            "click",
+            closeMobileMenu
           );
-
-        const moveY =
-          clamp(
-            y / 5,
-            -12,
-            12
-          );
-
-        magneticCTA.style.transform =
-          `translate3d(
-            ${moveX}px,
-            ${moveY}px,
-            0
-          )`;
-
-      }
-    );
-
-
-    magneticCTA.addEventListener(
-      "pointerleave",
-      () => {
-
-        magneticCTA.style.transform =
-          "translate3d(0,0,0)";
-
-      }
-    );
-
-  }
-
-
-  /* ==========================================================
-     EVENT ROW MICRO-INTERACTION
-  ========================================================== */
-
-  function initEventRows() {
-
-    const rows =
-      document.querySelectorAll(
-        ".events a"
-      );
-
-    rows.forEach(
-      row => {
-
-        row.addEventListener(
-          "pointermove",
-          event => {
-
-            if (
-              REDUCED_MOTION ||
-              "ontouchstart" in window
-            ) {
-
-              return;
-
-            }
-
-            const rect =
-              row.getBoundingClientRect();
-
-            const relativeX =
-              event.clientX -
-              rect.left;
-
-            const relativeY =
-              event.clientY -
-              rect.top;
-
-            const moveX =
-              (
-                relativeX /
-                rect.width -
-                0.5
-              ) * 8;
-
-            const moveY =
-              (
-                relativeY /
-                rect.height -
-                0.5
-              ) * 3;
-
-            row.style.transform =
-              `translate3d(
-                ${moveX}px,
-                ${moveY}px,
-                0
-              )`;
-
-          }
-        );
-
-
-        row.addEventListener(
-          "pointerleave",
-          () => {
-
-            row.style.transform =
-              "translate3d(0,0,0)";
-
-          }
-        );
-
-      }
-    );
-
-  }
-
-
-  /* ==========================================================
-     SCROLL LOOP
-  ========================================================== */
-
-  function onScroll() {
-
-    updateHeroProgress();
-
-    updateNavigation();
-
-    if (
-      scrollAnimationFrame
-    ) {
-
-      return;
-
-    }
-
-    scrollAnimationFrame =
-      requestAnimationFrame(
-        () => {
-
-          revealSections();
-
-          scrollAnimationFrame =
-            null;
 
         }
       );
@@ -1409,138 +1726,74 @@
   }
 
 
-  /* ==========================================================
-     RESIZE DEBOUNCE
-  ========================================================== */
+  /*
+   * Window events.
+   */
 
-  let resizeTimer = null;
-
-  function onResize() {
-
-    clearTimeout(
-      resizeTimer
-    );
-
-    resizeTimer =
-      setTimeout(
-        () => {
-
-          resizeCanvas();
-
-          updateHeroProgress();
-
-          revealSections();
-
-        },
-        100
-      );
-
-  }
+  window.addEventListener(
+    "scroll",
+    onScroll,
+    {
+      passive: true
+    }
+  );
 
 
-  /* ==========================================================
-     INITIALIZATION
-  ========================================================== */
-
-  function init() {
-
-    /*
-     * Canvas.
-     */
-
-    resizeCanvas();
+  window.addEventListener(
+    "resize",
+    onResize,
+    {
+      passive: true
+    }
+  );
 
 
-    /*
-     * Initial page state.
-     */
+  /*
+   * Countdown.
+   */
 
-    updateHeroProgress();
-
-    revealSections();
-
-    updateNavigation();
+  startCountdown();
 
 
-    /*
-     * Interactions.
-     */
+  /*
+   * Start frame engine.
+   */
 
-    initFAQ();
+  if (!animationStarted) {
 
-    initNavigation();
-
-    initMagneticCTA();
-
-    initEventRows();
-
-
-    /*
-     * Countdown.
-     */
-
-    updateCountdown();
-
-    setInterval(
-      updateCountdown,
-      1000
-    );
-
-
-    /*
-     * Frame system.
-     */
-
-    loadFrames();
-
-    animateFrames();
-
-
-    /*
-     * Browser events.
-     */
-
-    window.addEventListener(
-      "scroll",
-      onScroll,
-      {
-        passive: true
-      }
-    );
-
-
-    window.addEventListener(
-      "resize",
-      onResize,
-      {
-        passive: true
-      }
-    );
+    animationLoop();
 
   }
 
 
-  /* ==========================================================
-     START
-  ========================================================== */
+  /*
+   * Start loading.
+   */
 
-  if (
-    document.readyState ===
-    "loading"
-  ) {
+  loadFrames();
 
-    document.addEventListener(
-      "DOMContentLoaded",
-      init,
-      {
-        once: true
-      }
-    );
+}
 
-  } else {
 
-    init();
+/* =========================================================
+   START
+   ========================================================= */
 
-  }
+if (
+  document.readyState ===
+  "loading"
+) {
 
-})();
+  document.addEventListener(
+    "DOMContentLoaded",
+    init,
+    {
+      once: true
+    }
+  );
+
+} else {
+
+  init();
+
+}
