@@ -10,16 +10,16 @@
 
   <meta
     name="description"
-    content="ROBO KRITI 2026 — A powerful, energetic tech battle. An inter-class robotics competition at Army Public School, LBS Marg, Lucknow."
+    content="ROBO KRITI 2026 — A powerful, energetic tech battle for Army Public School Lal Bahadur Shastri Marg students of Classes 6–12."
   >
 
   <meta name="theme-color" content="#05070b">
 
-  <title>ROBO KRITI 2026 — A Powerful, Energetic Tech Battle</title>
+  <title>ROBO KRITI 2026 — Army Public School LBS Marg</title>
 
-  <!-- =====================================================
+  <!-- =========================================================
        FONTS
-       ===================================================== -->
+       ========================================================= -->
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,9 +29,9 @@
     rel="stylesheet"
   >
 
-  <!-- =====================================================
-       MAIN CSS
-       ===================================================== -->
+  <!-- =========================================================
+       STYLES
+       ========================================================= -->
 
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -39,1419 +39,1138 @@
 
 <body>
 
-  <!-- =====================================================
-       PRELOADER
-       ===================================================== -->
+  <!-- =========================================================
+       APP
+       ========================================================= -->
 
-  <div
-    id="preloader"
-    class="preloader"
-    aria-hidden="true"
-  >
+  <div id="app">
 
-    <div class="loader-inner">
+    <!-- =======================================================
+         PRELOADER
+         ======================================================= -->
 
-      <div class="loader-brand">
-        ROBO<span>KRITI</span>
-      </div>
-
-      <div class="loader-meta">
-        <span>SYSTEM INITIALIZATION</span>
-        <span id="loaderPercent">00%</span>
-      </div>
-
-      <div class="loader-line">
-        <i id="loaderBar"></i>
-      </div>
-
-      <div
-        id="loaderText"
-        class="loader-status"
-      >
-        INITIALIZING ARENA 00%
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       GLOBAL PARTICLE / EFFECT LAYER
-       ===================================================== -->
-
-  <canvas
-    id="particleCanvas"
-    class="particle-canvas"
-    aria-hidden="true"
-  ></canvas>
-
-  <div
-    class="cursor-glow"
-    aria-hidden="true"
-  ></div>
-
-
-  <!-- =====================================================
-       NAVIGATION
-       ===================================================== -->
-
-  <header class="nav" id="siteNav">
-
-    <a
-      href="index.html"
-      class="brand"
-      aria-label="ROBO KRITI 2026 Home"
+    <div
+      id="preloader"
+      aria-label="Loading ROBO KRITI"
+      aria-live="polite"
     >
 
-      <span class="brand-logo-wrap">
+      <div class="loader-inner">
 
-        <img
-          src="assets/logo/awes-logo.png"
-          alt="Army Public School logo"
-          class="brand-logo"
-        >
-
-      </span>
-
-      <span class="brand-divider"></span>
-
-      <span class="brand-wordmark">
-        ROBO <b>KRITI</b>
-        <small>2026</small>
-      </span>
-
-    </a>
-
-
-    <!-- Desktop Navigation -->
-
-    <nav
-      class="nav-links"
-      aria-label="Primary navigation"
-    >
-
-      <a
-        href="index.html"
-        class="active"
-      >
-        HOME
-      </a>
-
-      <a href="events.html">
-        EVENTS
-      </a>
-
-      <a href="rules.html">
-        RULES
-      </a>
-
-      <a href="announcements.html">
-        ANNOUNCEMENTS
-      </a>
-
-      <a href="registration.html">
-        REGISTER
-      </a>
-
-      <a href="contact.html">
-        CONTACT
-      </a>
-
-    </nav>
-
-
-    <!-- Mobile Menu Button -->
-
-    <button
-      class="menu"
-      id="menuToggle"
-      type="button"
-      aria-label="Open navigation menu"
-      aria-expanded="false"
-      aria-controls="mobileMenu"
-    >
-
-      <span></span>
-      <span></span>
-      <span></span>
-
-    </button>
-
-  </header>
-
-
-  <!-- =====================================================
-       COMPACT MOBILE MENU
-       ===================================================== -->
-
-  <aside
-    id="mobileMenu"
-    class="mobile-menu"
-    aria-hidden="true"
-  >
-
-    <div class="mobile-menu-top">
-
-      <span>
-        NAV / 01
-      </span>
-
-      <span>
-        SYSTEM ONLINE
-      </span>
-
-    </div>
-
-
-    <nav
-      class="mobile-nav"
-      aria-label="Mobile navigation"
-    >
-
-      <a
-        href="index.html"
-        class="active"
-      >
-        <span>01</span>
-        HOME
-      </a>
-
-      <a href="events.html">
-        <span>02</span>
-        EVENTS
-      </a>
-
-      <a href="rules.html">
-        <span>03</span>
-        RULES
-      </a>
-
-      <a href="announcements.html">
-        <span>04</span>
-        ANNOUNCEMENTS
-      </a>
-
-      <a href="registration.html">
-        <span>05</span>
-        REGISTER
-      </a>
-
-      <a href="contact.html">
-        <span>06</span>
-        CONTACT
-      </a>
-
-    </nav>
-
-
-    <div class="mobile-menu-footer">
-
-      <span>ROBO KRITI 2026</span>
-
-      <span>LUCKNOW / INDIA</span>
-
-    </div>
-
-  </aside>
-
-
-  <!-- =====================================================
-       HERO
-       ===================================================== -->
-
-  <main>
-
-    <section
-      class="hero"
-      id="home"
-      aria-label="ROBO KRITI 2026 Hero"
-    >
-
-      <div class="hero-visual">
-
-        <!-- 300-frame scroll sequence -->
-
-        <canvas
-          id="frameCanvas"
-          aria-hidden="true"
-        ></canvas>
-
-
-        <!-- Cinematic overlays -->
-
-        <div
-          class="scanlines"
-          aria-hidden="true"
-        ></div>
-
-        <div
-          class="vignette"
-          aria-hidden="true"
-        ></div>
-
-
-        <!-- Technical HUD -->
-
-        <div class="hero-hud">
-
-          <span>
-            SYSTEM ONLINE // TINKERING &amp; ROBOTICS LAB
-          </span>
-
-          <span>
-            ROBO KRITI // 2026
-          </span>
-
+        <div class="loader-brand">
+          ROBO<span>KRITI</span>
         </div>
 
+        <div class="loader-status">
+          <span id="loaderText">INITIALIZING ARENA 00%</span>
+        </div>
 
-        <!-- Hero copy -->
+        <div class="loader-line" aria-hidden="true">
+          <i id="loaderBar"></i>
+        </div>
 
-        <div class="hero-copy">
+        <div class="loader-meta">
+          <span>RK26 / SYSTEM BOOT</span>
+          <span>300 FRAMES</span>
+        </div>
 
-          <p class="hero-serial">
-            RK26
-            <span></span>
-            ARENA PROTOCOL
-          </p>
+      </div>
 
-          <p class="eyebrow">
-            INTER-CLASS ROBOTICS COMPETITION
-            <span>//</span>
-            2026
-          </p>
-
-
-          <h1>
-
-            <span class="robo-word">
-              ROBO
-            </span>
-
-            <span class="kriti-word">
-              KRITI
-            </span>
-
-            <em>
-              2026
-            </em>
-
-          </h1>
+    </div>
 
 
-          <div class="title-rule">
+    <!-- =======================================================
+         NAVIGATION
+         ======================================================= -->
 
-            <i></i>
+    <header class="nav" id="siteNav">
+
+      <a
+        href="#top"
+        class="brand"
+        aria-label="ROBO KRITI 2026 Home"
+      >
+
+        <div class="brand-logo-wrap">
+          <img
+            src="assets/logo.webp"
+            alt="ROBO KRITI logo"
+            class="brand-logo"
+            onerror="this.style.display='none'"
+          >
+        </div>
+
+        <span class="brand-wordmark">
+          ROBO <b>KRITI</b>
+        </span>
+
+        <span class="brand-year">26</span>
+
+      </a>
+
+
+      <nav
+        class="nav-links"
+        id="desktopNav"
+        aria-label="Main navigation"
+      >
+
+        <a href="#home" class="active">HOME</a>
+        <a href="#about">ABOUT</a>
+        <a href="#events">EVENTS</a>
+        <a href="#messages">MESSAGES</a>
+        <a href="#faq">FAQ</a>
+        <a href="#register">REGISTER</a>
+
+      </nav>
+
+
+      <!-- Compact mobile menu -->
+
+      <button
+        class="menu"
+        id="menuToggle"
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="mobileMenu"
+      >
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+      </button>
+
+    </header>
+
+
+    <!-- =======================================================
+         MOBILE NAVIGATION PANEL
+         ======================================================= -->
+
+    <aside
+      class="mobile-menu"
+      id="mobileMenu"
+      aria-hidden="true"
+    >
+
+      <div class="mobile-menu-head">
+
+        <span>RK26 // NAVIGATION</span>
+
+        <button
+          type="button"
+          id="menuClose"
+          aria-label="Close navigation"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <nav class="mobile-menu-links">
+
+        <a href="#home">
+          <small>01</small>
+          HOME
+        </a>
+
+        <a href="#about">
+          <small>02</small>
+          ABOUT
+        </a>
+
+        <a href="#events">
+          <small>03</small>
+          EVENTS
+        </a>
+
+        <a href="#messages">
+          <small>04</small>
+          MESSAGES
+        </a>
+
+        <a href="#faq">
+          <small>05</small>
+          FAQ
+        </a>
+
+        <a href="#register" class="mobile-register-link">
+          <small>06</small>
+          REGISTER
+        </a>
+
+      </nav>
+
+
+      <div class="mobile-menu-foot">
+
+        <span>ARMY PUBLIC SCHOOL</span>
+        <span>LBS MARG · LUCKNOW</span>
+
+      </div>
+
+    </aside>
+
+
+    <!-- =======================================================
+         GLOBAL PARTICLE LAYER
+         ======================================================= -->
+
+    <canvas
+      id="particleCanvas"
+      class="particle-canvas"
+      aria-hidden="true"
+    ></canvas>
+
+
+    <!-- =======================================================
+         HOME / HERO
+         ======================================================= -->
+
+    <main id="top">
+
+      <section
+        class="hero"
+        id="home"
+        aria-label="ROBO KRITI 2026 introduction"
+      >
+
+        <!-- Sticky cinematic visual -->
+
+        <div class="hero-visual">
+
+          <canvas
+            id="frameCanvas"
+            aria-hidden="true"
+          ></canvas>
+
+
+          <div
+            class="scanlines"
+            aria-hidden="true"
+          ></div>
+
+
+          <div
+            class="vignette"
+            aria-hidden="true"
+          ></div>
+
+
+          <!-- Technical HUD -->
+
+          <div class="hero-hud">
 
             <span>
-              A POWERFUL, ENERGETIC TECH BATTLE.
+              SYSTEM ONLINE // TINKERING &amp; ROBOTICS LAB
+            </span>
+
+            <span>
+              RK26 // LUCKNOW
             </span>
 
           </div>
 
 
-          <p class="tagline">
-            A powerful, energetic tech battle.
-          </p>
+          <!-- Main hero typography -->
 
-          <p class="subline">
-            Four robotic disciplines. One arena.
-            One day to prove what your machine can do.
-          </p>
+          <div class="hero-copy">
+
+            <p class="hero-serial">
+              RK26
+              <span></span>
+              SYSTEM 01
+            </p>
 
 
-          <div class="hero-actions">
+            <p class="eyebrow">
+              INTER-CLASS ROBOTICS COMPETITION
+              <span>//</span>
+              2026
+            </p>
 
-            <a
-              href="registration.html"
-              class="cta primary"
-            >
 
-              <span>
-                REGISTER NOW
+            <h1>
+
+              <span class="robo-word">
+                ROBO
               </span>
 
-              <span>
-                →
+              <span class="kriti-word">
+                KRITI
               </span>
 
-            </a>
+              <em>
+                2026
+              </em>
+
+            </h1>
 
 
-            <a
-              href="#battles"
-              class="cta ghost"
-            >
+            <div class="title-rule">
+
+              <i></i>
 
               <span>
+                A POWERFUL, ENERGETIC TECH BATTLE.
+              </span>
+
+            </div>
+
+
+            <p class="tagline">
+              Four robotic disciplines.
+              One arena.
+              One day to prove what your machine can do.
+            </p>
+
+
+            <p class="subline">
+              A high-energy robotics competition built exclusively
+              for Army Public School Lal Bahadur Shastri Marg
+              students of Classes 6–12.
+            </p>
+
+
+            <div class="hero-actions">
+
+              <a
+                href="#register"
+                class="cta primary"
+              >
                 ENTER THE ARENA
-              </span>
+                <span>↗</span>
+              </a>
 
-              <span>
-                ↓
-              </span>
+              <a
+                href="#events"
+                class="cta ghost"
+              >
+                EXPLORE EVENTS
+                <span>↓</span>
+              </a>
 
-            </a>
+            </div>
+
+          </div>
+
+
+          <!-- Event information -->
+
+          <div class="hero-data">
+
+            <div>
+              <small>EVENT DATE</small>
+              <strong>TO BE ANNOUNCED</strong>
+            </div>
+
+            <div>
+              <small>REGISTRATION</small>
+              <strong>FREE</strong>
+            </div>
+
+            <div>
+              <small>DEADLINE</small>
+              <strong>03 SEP 2026</strong>
+            </div>
+
+            <div>
+              <small>LOCATION</small>
+              <strong>LBS MARG · LUCKNOW</strong>
+            </div>
+
+          </div>
+
+
+          <!-- Scroll cue -->
+
+          <div
+            class="scroll-cue"
+            aria-hidden="true"
+          >
+            <span></span>
+            SCROLL TO DEPLOY
+          </div>
+
+
+          <!-- Frame counter -->
+
+          <div
+            class="frame-counter"
+            aria-hidden="true"
+          >
+            <span id="frameNow">001</span>
+            <i>/</i>
+            <span>300</span>
+          </div>
+
+
+          <!-- Vertical progress -->
+
+          <div
+            class="progress"
+            aria-hidden="true"
+          >
+            <i id="progressBar"></i>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           ABOUT / WHAT IS ROBO KRITI
+           ===================================================== -->
+
+      <section
+        class="about section"
+        id="about"
+      >
+
+        <div class="section-label">
+          01 / THE MISSION
+        </div>
+
+
+        <div class="about-layout">
+
+          <div class="about-heading">
+
+            <p class="micro-label">
+              BEYOND THE CLASSROOM
+            </p>
+
+            <h2>
+              BUILD.
+              <br>
+              BREAK.
+              <br>
+              <span>REBUILD.</span>
+            </h2>
+
+          </div>
+
+
+          <div class="about-copy">
+
+            <p class="lead">
+              ROBO KRITI is where engineering meets competition.
+            </p>
+
+            <p>
+              Students step out of theory and into the arena —
+              designing machines, solving problems, testing limits
+              and competing against their own peers.
+            </p>
+
+            <p>
+              Four disciplines.
+              Different challenges.
+              One shared objective:
+              <strong>make your machine perform.</strong>
+            </p>
+
+
+            <div class="eligibility-line">
+
+              <span>ELIGIBILITY</span>
+
+              <strong>
+                APS LBS MARG · CLASSES 6–12
+              </strong>
+
+            </div>
 
           </div>
 
         </div>
 
 
-        <!-- Hero information -->
+        <!-- Gita transition -->
 
-        <div class="hero-data">
+        <div class="gita-transition">
 
-          <div>
-
-            <small>
-              EVENT DATE
-            </small>
-
-            <strong>
-              TO BE ANNOUNCED
-            </strong>
-
-          </div>
-
-
-          <div>
-
-            <small>
-              REGISTRATION
-            </small>
-
-            <strong>
-              FREE
-            </strong>
-
-          </div>
-
-
-          <div>
-
-            <small>
-              DEADLINE
-            </small>
-
-            <strong>
-              03 SEP 2026
-            </strong>
-
-          </div>
-
-
-          <div>
-
-            <small>
-              LOCATION
-            </small>
-
-            <strong>
-              LUCKNOW
-            </strong>
-
-          </div>
-
-        </div>
-
-
-        <!-- Scroll cue -->
-
-        <div
-          class="scroll-cue"
-          aria-hidden="true"
-        >
-
-          <span></span>
-
-          <b>
-            SCROLL TO ENTER
-          </b>
-
-        </div>
-
-
-        <!-- Frame counter -->
-
-        <div
-          class="frame-counter"
-          aria-hidden="true"
-        >
-
-          <span id="frameNow">
-            001
+          <span class="gita-index">
+            02 / MINDSET
           </span>
 
-          <i>/</i>
+          <div class="gita-line"></div>
+
+          <p class="gita-shloka">
+            कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।
+          </p>
+
+          <p class="gita-translation">
+            Your right is to action alone, never to its fruits.
+          </p>
+
+          <strong>
+            BUILD WITH PURPOSE.
+          </strong>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           EVENTS
+           ===================================================== -->
+
+      <section
+        class="events section"
+        id="events"
+      >
+
+        <div class="section-label">
+          03 / THE ARENA
+        </div>
+
+
+        <div class="events-intro">
+
+          <div>
+
+            <p class="micro-label">
+              FOUR DISCIPLINES
+            </p>
+
+            <h2>
+              CHOOSE
+              <span>YOUR BATTLE.</span>
+            </h2>
+
+          </div>
+
+          <p>
+            Every arena demands a different machine,
+            strategy and mindset.
+          </p>
+
+        </div>
+
+
+        <!-- Event list -->
+
+        <div
+          class="event-list"
+          id="eventList"
+        >
+
+          <article
+            class="event-item"
+            data-event="race"
+          >
+
+            <div class="event-number">
+              01
+            </div>
+
+            <div class="event-main">
+
+              <span>PRECISION / SPEED</span>
+
+              <h3>
+                ROBO RACE
+              </h3>
+
+            </div>
+
+            <div class="event-arrow">
+              ↗
+            </div>
+
+          </article>
+
+
+          <article
+            class="event-item"
+            data-event="war"
+          >
+
+            <div class="event-number">
+              02
+            </div>
+
+            <div class="event-main">
+
+              <span>POWER / CONTROL</span>
+
+              <h3>
+                ROBO WAR
+              </h3>
+
+            </div>
+
+            <div class="event-arrow">
+              ↗
+            </div>
+
+          </article>
+
+
+          <article
+            class="event-item"
+            data-event="tug"
+          >
+
+            <div class="event-number">
+              03
+            </div>
+
+            <div class="event-main">
+
+              <span>FORCE / TRACTION</span>
+
+              <h3>
+                ROBO TUG OF WAR
+              </h3>
+
+            </div>
+
+            <div class="event-arrow">
+              ↗
+            </div>
+
+          </article>
+
+
+          <article
+            class="event-item"
+            data-event="soccer"
+          >
+
+            <div class="event-number">
+              04
+            </div>
+
+            <div class="event-main">
+
+              <span>TACTICS / PRECISION</span>
+
+              <h3>
+                ROBO SOCCER
+              </h3>
+
+            </div>
+
+            <div class="event-arrow">
+              ↗
+            </div>
+
+          </article>
+
+        </div>
+
+
+        <div class="events-footer">
 
           <span>
-            300
+            TAP / HOVER TO EXPLORE
           </span>
 
-        </div>
-
-
-        <!-- Hero progress -->
-
-        <div
-          class="progress"
-          aria-hidden="true"
-        >
-
-          <i id="progressBar"></i>
+          <a href="events.html">
+            VIEW ALL EVENTS →
+          </a>
 
         </div>
 
-      </div>
-
-    </section>
+      </section>
 
 
-    <!-- =====================================================
-         SYSTEM INTRO
-         ===================================================== -->
+      <!-- =====================================================
+           WHY PARTICIPATE
+           ===================================================== -->
 
-    <section
-      class="mission"
-      id="mission"
-    >
+      <section class="why section">
 
-      <div class="mission-heading">
-
-        <p class="section-index">
-          01 / SYSTEM
-        </p>
-
-        <h2>
-          BUILT
-          <span>TO COMPETE.</span>
-        </h2>
-
-      </div>
-
-
-      <div class="mission-copy">
-
-        <div class="system-status">
-
-          <span class="status-dot"></span>
-
-          <span>
-            SYSTEM ONLINE
-          </span>
-
+        <div class="section-label">
+          04 / THE EXPERIENCE
         </div>
 
 
-        <p class="mission-lead">
-          Robokriti 2026 brings engineering,
-          strategy and competition into one arena.
-        </p>
+        <div class="why-layout">
 
-        <p>
-          Designed as an inter-class robotics competition,
-          Robokriti gives students the opportunity to turn
-          ideas into machines and machines into competitors.
-        </p>
-
-      </div>
-
-    </section>
+          <h2>
+            NOT JUST
+            <span>A COMPETITION.</span>
+          </h2>
 
 
-    <!-- =====================================================
-         THE FOUR BATTLES
-         ===================================================== -->
+          <div class="why-points">
 
-    <section
-      class="battle"
-      id="battles"
-    >
+            <div class="why-point">
 
-      <div class="battle-header">
+              <span>01</span>
 
-        <div>
+              <div>
+                <h3>ENGINEER</h3>
+                <p>
+                  Turn an idea into a machine that actually moves,
+                  reacts and performs.
+                </p>
+              </div>
 
-          <p class="section-index">
-            02 / ARENA
+            </div>
+
+
+            <div class="why-point">
+
+              <span>02</span>
+
+              <div>
+                <h3>ADAPT</h3>
+                <p>
+                  Problems rarely behave exactly as expected.
+                  Learn to respond under pressure.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div class="why-point">
+
+              <span>03</span>
+
+              <div>
+                <h3>COMPETE</h3>
+                <p>
+                  Put your engineering against the best machines
+                  from your school.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           MESSAGES
+           ===================================================== -->
+
+      <section
+        class="messages section"
+        id="messages"
+      >
+
+        <div class="section-label">
+          05 / MESSAGES
+        </div>
+
+
+        <div class="messages-heading">
+
+          <p class="micro-label">
+            FROM THE PEOPLE BEHIND THE ARENA
           </p>
 
           <h2>
-            THE FOUR
-            <span>BATTLES.</span>
+            BUILDING
+            <span>THE FUTURE.</span>
           </h2>
 
         </div>
 
 
-        <p class="battle-intro">
-          Four disciplines. Four different engineering
-          challenges. One competition.
-        </p>
+        <div class="message-grid">
 
-      </div>
+          <article class="message">
+
+            <div class="message-top">
+              <span>MESSAGE / 01</span>
+              <span>PRINCIPAL</span>
+            </div>
+
+            <div class="message-content">
+
+              <p class="message-placeholder">
+                “The message from the Principal will appear here.”
+              </p>
+
+              <div class="message-signature">
+                PRINCIPAL
+                <small>
+                  ARMY PUBLIC SCHOOL
+                  LAL BAHADUR SHASTRI MARG
+                </small>
+              </div>
+
+            </div>
+
+          </article>
 
 
-      <!-- Interactive event list -->
+          <article class="message">
 
-      <div
-        class="discipline-list"
-        id="disciplineList"
+            <div class="message-top">
+              <span>MESSAGE / 02</span>
+              <span>MENTOR</span>
+            </div>
+
+            <div class="message-content">
+
+              <p class="message-placeholder">
+                “The message from the Mentor will appear here.”
+              </p>
+
+              <div class="message-signature">
+                MENTOR
+                <small>
+                  ROBO KRITI 2026
+                </small>
+              </div>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================================
+           REGISTRATION COUNTDOWN
+           ===================================================== -->
+
+      <section
+        class="register section"
+        id="register"
       >
 
-        <article
-          class="discipline"
-          data-event="race"
-        >
+        <div class="section-label">
+          06 / REGISTRATION
+        </div>
 
-          <div class="discipline-number">
-            01
-          </div>
 
-          <div class="discipline-main">
+        <div class="register-layout">
 
-            <p>
-              SPEED / PRECISION / CONTROL
+          <div class="register-copy">
+
+            <p class="micro-label">
+              REGISTRATION PROTOCOL
             </p>
 
-            <h3>
-              ROBO RACE
-            </h3>
-
-            <div class="discipline-description">
-              Push your machine through the course
-              with speed, precision and perfect control.
-            </div>
-
-          </div>
-
-          <div class="discipline-arrow">
-            ↗
-          </div>
-
-        </article>
-
-
-        <article
-          class="discipline"
-          data-event="war"
-        >
-
-          <div class="discipline-number">
-            02
-          </div>
-
-          <div class="discipline-main">
+            <h2>
+              READY TO
+              <span>ENTER?</span>
+            </h2>
 
             <p>
-              POWER / STRATEGY / IMPACT
-            </p>
-
-            <h3>
-              ROBO WAR
-            </h3>
-
-            <div class="discipline-description">
-              Engineer, control and outmanoeuvre
-              your opponent in a battle of machines.
-            </div>
-
-          </div>
-
-          <div class="discipline-arrow">
-            ↗
-          </div>
-
-        </article>
-
-
-        <article
-          class="discipline"
-          data-event="tug"
-        >
-
-          <div class="discipline-number">
-            03
-          </div>
-
-          <div class="discipline-main">
-
-            <p>
-              FORCE / TRACTION / STABILITY
-            </p>
-
-            <h3>
-              ROBO TUG OF WAR
-            </h3>
-
-            <div class="discipline-description">
-              A pure test of mechanical strength,
-              traction and stability.
-            </div>
-
-          </div>
-
-          <div class="discipline-arrow">
-            ↗
-          </div>
-
-        </article>
-
-
-        <article
-          class="discipline"
-          data-event="soccer"
-        >
-
-          <div class="discipline-number">
-            04
-          </div>
-
-          <div class="discipline-main">
-
-            <p>
-              AGILITY / LOGIC / TEAMPLAY
-            </p>
-
-            <h3>
-              ROBO SOCCER
-            </h3>
-
-            <div class="discipline-description">
-              Combine robotic agility, control and
-              strategy to dominate the arena.
-            </div>
-
-          </div>
-
-          <div class="discipline-arrow">
-            ↗
-          </div>
-
-        </article>
-
-      </div>
-
-
-      <div class="arena-footer">
-
-        <span>
-          04 DISCIPLINES
-        </span>
-
-        <span>
-          01 ARENA
-        </span>
-
-        <span>
-          01 CHALLENGE
-        </span>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         BUILD / CONTROL / ADAPT / COMPETE
-         ===================================================== -->
-
-    <section
-      class="philosophy"
-      id="philosophy"
-    >
-
-      <div class="philosophy-intro">
-
-        <p class="section-index">
-          03 / PROTOCOL
-        </p>
-
-        <h2>
-          BUILD.
-          <br>
-          CONTROL.
-          <br>
-          ADAPT.
-          <br>
-          <span>COMPETE.</span>
-        </h2>
-
-      </div>
-
-
-      <div class="philosophy-list">
-
-        <article>
-
-          <span>01</span>
-
-          <div>
-
-            <h3>
-              BUILD
-            </h3>
-
-            <p>
-              Turn an idea into a machine.
+              Registration is free and exclusively open to
+              eligible Army Public School Lal Bahadur Shastri
+              Marg students of Classes 6–12.
             </p>
 
           </div>
 
-        </article>
 
+          <div class="countdown-panel">
 
-        <article>
-
-          <span>02</span>
-
-          <div>
-
-            <h3>
-              CONTROL
-            </h3>
-
-            <p>
-              Master every movement.
-            </p>
-
-          </div>
-
-        </article>
-
-
-        <article>
-
-          <span>03</span>
-
-          <div>
-
-            <h3>
-              ADAPT
-            </h3>
-
-            <p>
-              Respond when the arena changes.
-            </p>
-
-          </div>
-
-        </article>
-
-
-        <article>
-
-          <span>04</span>
-
-          <div>
-
-            <h3>
-              COMPETE
-            </h3>
-
-            <p>
-              Put your machine to the test.
-            </p>
-
-          </div>
-
-        </article>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         COUNTDOWN
-         ===================================================== -->
-
-    <section
-      class="countdown-section"
-      id="countdown"
-    >
-
-      <div class="countdown-top">
-
-        <p class="section-index">
-          04 / DEADLINE
-        </p>
-
-        <span>
-          REGISTRATION PROTOCOL
-        </span>
-
-      </div>
-
-
-      <div class="countdown-content">
-
-        <p class="countdown-label">
-          REGISTRATION CLOSES IN
-        </p>
-
-
-        <div
-          class="countdown"
-          id="countdownTimer"
-          aria-live="polite"
-        >
-
-          <div>
-
-            <strong id="days">
-              00
-            </strong>
-
-            <span>
-              DAYS
+            <span class="countdown-label">
+              REGISTRATION CLOSES IN
             </span>
 
-          </div>
+
+            <div
+              class="countdown"
+              id="countdown"
+              aria-live="polite"
+            >
+
+              <div>
+                <strong id="countDays">00</strong>
+                <small>DAYS</small>
+              </div>
+
+              <i>:</i>
+
+              <div>
+                <strong id="countHours">00</strong>
+                <small>HRS</small>
+              </div>
+
+              <i>:</i>
+
+              <div>
+                <strong id="countMinutes">00</strong>
+                <small>MIN</small>
+              </div>
+
+              <i>:</i>
+
+              <div>
+                <strong id="countSeconds">00</strong>
+                <small>SEC</small>
+              </div>
+
+            </div>
 
 
-          <b>:</b>
-
-
-          <div>
-
-            <strong id="hours">
-              00
-            </strong>
-
-            <span>
-              HOURS
-            </span>
-
-          </div>
-
-
-          <b>:</b>
-
-
-          <div>
-
-            <strong id="minutes">
-              00
-            </strong>
-
-            <span>
-              MINUTES
-            </span>
-
-          </div>
-
-
-          <b>:</b>
-
-
-          <div>
-
-            <strong id="seconds">
-              00
-            </strong>
-
-            <span>
-              SECONDS
-            </span>
+            <div class="deadline">
+              DEADLINE // 03 SEP 2026
+            </div>
 
           </div>
 
         </div>
 
 
-        <div class="deadline-line">
+        <div class="register-cta">
 
-          <span>
-            DEADLINE
-          </span>
+          <div>
+            <span>
+              ELIGIBILITY CHECK
+            </span>
 
-          <strong>
-            03 SEP 2026
-          </strong>
+            <strong>
+              APS LBS MARG · CLASS 6–12
+            </strong>
+          </div>
 
-          <span>
-            / FREE REGISTRATION
-          </span>
+
+          <a
+            href="register.html"
+            class="cta primary large"
+          >
+            INITIATE REGISTRATION
+            <span>↗</span>
+          </a>
 
         </div>
 
-      </div>
-
-    </section>
+      </section>
 
 
-    <!-- =====================================================
-         EVENT INFO
-         ===================================================== -->
+      <!-- =====================================================
+           FAQ
+           ===================================================== -->
 
-    <section
-      class="info-strip"
-      aria-label="Event information"
-    >
-
-      <div>
-        <span>EVENT</span>
-        <strong>ROBO KRITI 2026</strong>
-      </div>
-
-      <div>
-        <span>DATE</span>
-        <strong>TO BE ANNOUNCED</strong>
-      </div>
-
-      <div>
-        <span>LOCATION</span>
-        <strong>ARMY PUBLIC SCHOOL, LBS MARG</strong>
-      </div>
-
-      <div>
-        <span>ENTRY</span>
-        <strong>FREE</strong>
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         MESSAGES
-         ===================================================== -->
-
-    <section
-      class="messages"
-      id="messages"
-    >
-
-      <div class="messages-heading">
-
-        <p class="section-index">
-          05 / MESSAGES
-        </p>
-
-        <h2>
-          FROM THE
-          <span>PEOPLE BEHIND IT.</span>
-        </h2>
-
-      </div>
-
-
-      <div class="message-grid">
-
-        <article class="message">
-
-          <div class="message-number">
-            01
-          </div>
-
-          <span>
-            MESSAGE FROM THE PRINCIPAL
-          </span>
-
-          <h3>
-            Principal
-          </h3>
-
-          <blockquote>
-            “Robokriti 2026 is an opportunity for students
-            to transform curiosity into engineering, ideas
-            into machines and teamwork into achievement.”
-          </blockquote>
-
-        </article>
-
-
-        <article class="message">
-
-          <div class="message-number">
-            02
-          </div>
-
-          <span>
-            MESSAGE FROM THE MENTOR
-          </span>
-
-          <h3>
-            Mentor
-          </h3>
-
-          <blockquote>
-            “Build with purpose, compete with discipline
-            and learn from every challenge. The arena is
-            where your ideas become real.”
-          </blockquote>
-
-        </article>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         FAQ
-         ===================================================== -->
-
-    <section
-      class="faq-section"
-      id="faq"
-    >
-
-      <div class="faq-heading">
-
-        <p class="section-index">
-          06 / INTEL
-        </p>
-
-        <h2>
-          FREQUENTLY
-          <span>ASKED.</span>
-        </h2>
-
-      </div>
-
-
-      <div
-        class="faq-list"
-        id="faqList"
+      <section
+        class="faq section"
+        id="faq"
       >
 
-        <button
-          class="faq-item"
-          type="button"
-          aria-expanded="false"
-        >
-
-          <span class="faq-number">
-            01
-          </span>
-
-          <span class="faq-question">
-            Who can participate?
-          </span>
-
-          <span class="faq-plus">
-            +
-          </span>
-
-          <span class="faq-answer">
-            Robokriti 2026 is an inter-class robotics
-            competition. Participants should follow the
-            eligibility requirements specified for their event.
-          </span>
-
-        </button>
+        <div class="section-label">
+          07 / FAQ
+        </div>
 
 
-        <button
-          class="faq-item"
-          type="button"
-          aria-expanded="false"
-        >
+        <div class="faq-layout">
 
-          <span class="faq-number">
-            02
-          </span>
+          <div class="faq-heading">
 
-          <span class="faq-question">
-            Is registration free?
-          </span>
+            <p class="micro-label">
+              NEED TO KNOW
+            </p>
 
-          <span class="faq-plus">
-            +
-          </span>
+            <h2>
+              QUESTIONS?
+              <span>WE HAVE ANSWERS.</span>
+            </h2>
 
-          <span class="faq-answer">
-            Yes. Registration for Robokriti 2026 is completely FREE.
-          </span>
-
-        </button>
+          </div>
 
 
-        <button
-          class="faq-item"
-          type="button"
-          aria-expanded="false"
-        >
+          <div
+            class="faq-list"
+            id="faqList"
+          >
 
-          <span class="faq-number">
-            03
-          </span>
+            <details class="faq-item">
 
-          <span class="faq-question">
-            What events are included?
-          </span>
+              <summary>
+                <span>01</span>
+                Who can participate?
+                <b>+</b>
+              </summary>
 
-          <span class="faq-plus">
-            +
-          </span>
+              <div class="faq-answer">
+                ROBO KRITI 2026 is exclusively for students of
+                Army Public School Lal Bahadur Shastri Marg
+                studying in Classes 6–12.
+              </div>
 
-          <span class="faq-answer">
-            Robo Race, Robo War, Robo Tug of War and Robo Soccer.
-          </span>
-
-        </button>
+            </details>
 
 
-        <button
-          class="faq-item"
-          type="button"
-          aria-expanded="false"
-        >
+            <details class="faq-item">
 
-          <span class="faq-number">
-            04
-          </span>
+              <summary>
+                <span>02</span>
+                Is registration free?
+                <b>+</b>
+              </summary>
 
-          <span class="faq-question">
-            When does registration close?
-          </span>
+              <div class="faq-answer">
+                Yes. Registration for ROBO KRITI 2026 is free.
+              </div>
 
-          <span class="faq-plus">
-            +
-          </span>
-
-          <span class="faq-answer">
-            Registration closes on 03 SEP 2026.
-          </span>
-
-        </button>
+            </details>
 
 
-        <button
-          class="faq-item"
-          type="button"
-          aria-expanded="false"
-        >
+            <details class="faq-item">
 
-          <span class="faq-number">
-            05
-          </span>
+              <summary>
+                <span>03</span>
+                When does registration close?
+                <b>+</b>
+              </summary>
 
-          <span class="faq-question">
-            When is the competition?
-          </span>
+              <div class="faq-answer">
+                Registration closes on 03 September 2026.
+              </div>
 
-          <span class="faq-plus">
-            +
-          </span>
-
-          <span class="faq-answer">
-            The event date will be announced soon.
-          </span>
-
-        </button>
+            </details>
 
 
-        <button
-          class="faq-item"
-          type="button"
-          aria-expanded="false"
-        >
+            <details class="faq-item">
 
-          <span class="faq-number">
-            06
-          </span>
+              <summary>
+                <span>04</span>
+                When is the competition?
+                <b>+</b>
+              </summary>
 
-          <span class="faq-question">
-            Where will Robokriti take place?
-          </span>
+              <div class="faq-answer">
+                The event date will be announced soon.
+                Keep checking the official announcements.
+              </div>
 
-          <span class="faq-plus">
-            +
-          </span>
-
-          <span class="faq-answer">
-            Army Public School, LBS Marg, Lucknow.
-          </span>
-
-        </button>
+            </details>
 
 
-        <button
-          class="faq-item"
-          type="button"
-          aria-expanded="false"
-        >
+            <details class="faq-item">
 
-          <span class="faq-number">
-            07
-          </span>
+              <summary>
+                <span>05</span>
+                Where will ROBO KRITI take place?
+                <b>+</b>
+              </summary>
 
-          <span class="faq-question">
-            Where can I find the rules?
-          </span>
+              <div class="faq-answer">
+                Army Public School Lal Bahadur Shastri Marg,
+                Lucknow.
+              </div>
 
-          <span class="faq-plus">
-            +
-          </span>
-
-          <span class="faq-answer">
-            Detailed rules will be available in the Rules
-            section for the respective disciplines.
-          </span>
-
-        </button>
+            </details>
 
 
-        <button
-          class="faq-item"
-          type="button"
-          aria-expanded="false"
-        >
+            <details class="faq-item">
 
-          <span class="faq-number">
-            08
-          </span>
+              <summary>
+                <span>06</span>
+                What events are available?
+                <b>+</b>
+              </summary>
 
-          <span class="faq-question">
-            How can I get help?
-          </span>
+              <div class="faq-answer">
+                Robo Race, Robo War, Robo Tug of War and
+                Robo Soccer.
+              </div>
 
-          <span class="faq-plus">
-            +
-          </span>
+            </details>
 
-          <span class="faq-answer">
-            Use the Contact page help form for questions
-            or assistance regarding registration and the competition.
-          </span>
+          </div>
 
-        </button>
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <!-- =======================================================
+         FOOTER
+         ======================================================= -->
+
+    <footer class="footer">
+
+      <div class="footer-brand">
+
+        <strong>
+          ROBO <span>KRITI</span>
+        </strong>
+
+        <small>
+          2026 / A POWERFUL, ENERGETIC TECH BATTLE.
+        </small>
 
       </div>
 
-    </section>
+
+      <div class="footer-location">
+
+        <small>
+          ORGANIZED FOR
+        </small>
+
+        <strong>
+          ARMY PUBLIC SCHOOL
+          <br>
+          LAL BAHADUR SHASTRI MARG
+        </strong>
+
+      </div>
 
 
-    <!-- =====================================================
-         FINAL CTA
-         ===================================================== -->
+      <div class="footer-contact">
 
-    <section
-      class="register"
-      id="register"
-    >
+        <small>
+          CONTACT
+        </small>
 
-      <div class="register-inner">
-
-        <p class="section-index">
-          07 / FINAL CALL
-        </p>
-
-        <p class="register-kicker">
-          READY TO COMPETE?
-        </p>
-
-        <h2>
-          ENTER
-          <span>THE ARENA.</span>
-        </h2>
-
-        <p class="register-copy">
-          Build your machine. Bring your strategy.
-          Take your place in Robokriti 2026.
-        </p>
-
-
-        <a
-          href="registration.html"
-          class="cta primary large"
-        >
-
-          <span>
-            REGISTER NOW
-          </span>
-
-          <span>
-            →
-          </span>
-
+        <a href="mailto:ayusshh@outlook.in">
+          ayusshh@outlook.in
         </a>
 
+      </div>
 
-        <p class="date-line">
-          REGISTRATION DEADLINE // 03 SEP 2026
-          &nbsp;&nbsp;·&nbsp;&nbsp;
-          EVENT DATE // TO BE ANNOUNCED
-        </p>
+
+      <div class="footer-meta">
+
+        <span>
+          LUCKNOW
+        </span>
+
+        <span>
+          RK26
+        </span>
+
+        <span>
+          © 2026
+        </span>
 
       </div>
 
-    </section>
+    </footer>
 
-  </main>
-
-
-  <!-- =====================================================
-       FOOTER
-       ===================================================== -->
-
-  <footer>
-
-    <div class="footer-brand">
-
-      <strong>
-        ROBO <span>KRITI</span>
-        <small>2026</small>
-      </strong>
-
-      <p>
-        A powerful, energetic tech battle.
-      </p>
-
-    </div>
+  </div>
 
 
-    <div class="footer-location">
+  <!-- =========================================================
+       SCRIPTS
+       ========================================================= -->
 
-      <span>
-        ARMY PUBLIC SCHOOL
-      </span>
+  <script
+    type="module"
+    src="script.js"
+  ></script>
 
-      <span>
-        LBS MARG, LUCKNOW
-      </span>
-
-    </div>
-
-
-    <div class="footer-contact">
-
-      <span>
-        CONTACT
-      </span>
-
-      <a href="mailto:ayusshh@outlook.in">
-        ayusshh@outlook.in
-      </a>
-
-    </div>
-
-
-    <div class="footer-bottom">
-
-      <small>
-        © 2026 ROBO KRITI
-      </small>
-
-      <a href="#home">
-        BACK TO TOP ↑
-      </a>
-
-    </div>
-
-  </footer>
-
-
-  <!-- =====================================================
-       JAVASCRIPT
-       ===================================================== -->
-
-  <script src="home-content.js"></script>
-  <script src="script.js"></script>
+  <script
+    type="module"
+    src="home-content.js"
+  ></script>
 
 </body>
 </html>
