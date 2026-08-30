@@ -2,35 +2,10 @@
   "rules": {
     ".read": false,
     ".write": false,
-    "registrations": {
-      "$id": {
-        ".read": "auth != null && auth.token.email == 'ayusshh@outlook.in'",
-        ".write": "(auth != null && auth.token.email == 'ayusshh@outlook.in') || (!data.exists() && newData.exists() && now <= 1788460199000 && newData.hasChildren(['teamName','event','members','leaderEmail','leaderPhone','createdAt']) && newData.child('members').numChildren() >= 1 && newData.child('members').numChildren() <= 5)"
-      }
-    },
-    "contacts": {
-      "$ticket": {
-        ".read": "auth != null && auth.token.email == 'ayusshh@outlook.in'",
-        ".write": "auth != null && auth.token.email == 'ayusshh@outlook.in' || (!data.exists() && newData.exists() && newData.hasChildren(['ticket','name','email','subject','message','createdAt','status']))"
-      }
-    },
-    "contactStatus": {
-      "$ticket": {
-        ".read": true,
-        ".write": "auth != null && auth.token.email == 'ayusshh@outlook.in' || (!data.exists() && newData.hasChildren(['status']))"
-      }
-    },
-    "announcements": {
-      "$id": {
-        ".read": true,
-        ".write": "auth != null && auth.token.email == 'ayusshh@outlook.in'"
-      }
-    },
-    "results": {
-      "$id": {
-        ".read": true,
-        ".write": "auth != null && auth.token.email == 'ayusshh@outlook.in'"
-      }
-    }
+    "registrations": {"$id": {".read": "auth != null && auth.token.email == 'ayusshh@outlook.in'", ".write": "(auth != null && auth.token.email == 'ayusshh@outlook.in') || (!data.exists() && newData.exists() && now <= 1788460199000 && newData.hasChildren(['teamName','event','members','leaderEmail','leaderPhone','createdAt']) && newData.child('members').numChildren() >= 1 && newData.child('members').numChildren() <= 5)"}},
+    "contacts": {"$ticket": {".read": "auth != null && auth.token.email == 'ayusshh@outlook.in'", ".write": "(auth != null && auth.token.email == 'ayusshh@outlook.in') || (!data.exists() && newData.exists() && newData.hasChildren(['ticket','name','email','subject','message','createdAt','status']))"}},
+    "contactStatus": {"$ticket": {".read": true, ".write": "auth != null && auth.token.email == 'ayusshh@outlook.in' || (!data.exists() && newData.hasChildren(['status']))"}},
+    "announcements": {"$id": {".read": true, ".write": "auth != null && auth.token.email == 'ayusshh@outlook.in'"}},
+    "results": {"$id": {".read": true, ".write": "auth != null && auth.token.email == 'ayusshh@outlook.in'"}}
   }
 }
