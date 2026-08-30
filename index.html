@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#05070b">
+  <title>ROBO KRITI 2026 — A powerful, energetic tech battle.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="preloader" aria-live="polite">
+    <div class="loader-mark">RK<span>26</span></div>
+    <div class="loader-line"><i id="loaderBar"></i></div>
+    <div id="loaderText">INITIALIZING ARENA 00%</div>
+  </div>
+
+  <header class="nav">
+    <a class="brand" href="#" aria-label="ROBO KRITI home">
+      <span class="brand-awes">AWES</span>
+      <span class="brand-divider"></span>
+      <span>ROBO KRITI <b>26</b></span>
+    </a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a class="active" href="#home">HOME</a>
+      <a href="#battle">BATTLE</a>
+      <a href="#messages">MESSAGES</a>
+      <a href="#register">REGISTER</a>
+    </nav>
+    <button class="menu" aria-label="Open navigation"><span></span><span></span></button>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-visual">
+        <canvas id="frameCanvas" aria-label="Cinematic robotics animation controlled by scrolling"></canvas>
+        <div class="scanlines"></div>
+        <div class="vignette"></div>
+      </div>
+
+      <div class="hero-hud hud-top">
+        <span>ROBO KRITI // 2026</span>
+        <span id="systemStatus">● SYSTEM ONLINE</span>
+      </div>
+
+      <div class="hero-copy">
+        <p class="eyebrow">SYSTEM ONLINE // TINKERING &amp; ROBOTICS LAB</p>
+        <h1><span>ROBO</span><span>KRITI</span><em>2026</em></h1>
+        <p class="tagline">A powerful, energetic tech battle.</p>
+        <p class="subline">Four robotic disciplines. One arena. One day to prove what your machine can do.</p>
+        <div class="hero-actions">
+          <a class="cta primary" href="#register">ENTER THE BATTLE <span>↗</span></a>
+          <a class="cta ghost" href="#battle">EXPLORE DISCIPLINES</a>
+        </div>
+      </div>
+
+      <div class="hero-data">
+        <div><small>EVENT DATE</small><strong>03 SEP 2026</strong></div>
+        <div><small>REGISTRATION</small><strong>FREE</strong></div>
+        <div><small>DEADLINE</small><strong>01 SEP 2026</strong></div>
+        <div><small>LOCATION</small><strong>LUCKNOW</strong></div>
+      </div>
+
+      <div class="scroll-cue"><span></span> SCROLL TO ENGAGE</div>
+      <div class="frame-counter"><span id="frameNow">001</span><i>/</i><span id="frameTotal">300</span></div>
+      <div class="progress"><i id="progressBar"></i></div>
+    </section>
+
+    <section class="mission" id="mission">
+      <p class="section-index">01 // MISSION</p>
+      <h2>BUILD.<br><span>CONTROL.</span><br>COMPETE.</h2>
+      <p>Robokriti 2026 is an inter-class robotics competition built around speed, control, strategy and engineering.</p>
+    </section>
+
+    <section class="battle" id="battle">
+      <p class="section-index">02 // THE BATTLE</p>
+      <h2>FOUR DISCIPLINES.<br><span>ONE ARENA.</span></h2>
+      <div class="discipline-list">
+        <article><b>01</b><h3>ROBO RACE</h3><span>SPEED / PRECISION</span></article>
+        <article><b>02</b><h3>ROBO WAR</h3><span>POWER / STRATEGY</span></article>
+        <article><b>03</b><h3>ROBO TUG OF WAR</h3><span>FORCE / CONTROL</span></article>
+        <article><b>04</b><h3>ROBO SOCCER</h3><span>AGILITY / TEAMPLAY</span></article>
+      </div>
+    </section>
+
+    <section class="messages" id="messages">
+      <p class="section-index">03 // MESSAGES</p>
+      <div class="message-grid">
+        <article><span>PRINCIPAL</span><h2>THE FUTURE<br>IS BUILT.</h2><p>Principal's message will be placed here.</p></article>
+        <article><span>MENTOR</span><h2>THINK.<br>BUILD. TEST.</h2><p>Mentor's message will be placed here.</p></article>
+      </div>
+    </section>
+
+    <section class="register" id="register">
+      <p class="section-index">04 // ARENA ACCESS</p>
+      <h2>YOUR MACHINE.<br><span>YOUR MOVE.</span></h2>
+      <a class="cta primary large" href="#">REGISTER NOW <span>↗</span></a>
+      <p class="date-line">03 SEP 2026 // LUCKNOW // FREE ENTRY</p>
+    </section>
+  </main>
+
+  <footer>
+    <div><strong>ROBO KRITI <span>2026</span></strong><small>Army Public School, LBS Marg, Lucknow</small></div>
+    <a href="mailto:ayusshh@outlook.in">ayusshh@outlook.in</a>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
