@@ -1,35 +1,3 @@
-(() => {
-  const canvas=document.querySelector('[data-frame-canvas]');
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  const fallback=document.querySelector('.hero-video-fallback');
-  const status=document.querySelector('[data-frame-status]');
-  // The existing GitHub assets/frames directory is intentionally not copied or altered.
-  // This loader supports the common numbered-frame conventions. If your existing frames use another
-  // naming convention, set window.ROBOKRITI_FRAME_PATTERN and window.ROBOKRITI_FRAME_COUNT before hero.js.
-  const pattern=window.ROBOKRITI_FRAME_PATTERN || 'assets/frames/frame_{n}.jpg';
-  const count=Number(window.ROBOKRITI_FRAME_COUNT || 180);
-  const pad=Number(window.ROBOKRITI_FRAME_PAD || 4);
-  const frames=[]; let loaded=0,failed=0,active=0;
-  const makeSrc=n=>pattern.replace('{n}',String(n).padStart(pad,'0'));
-  function resize(){canvas.width=Math.floor(innerWidth*devicePixelRatio);canvas.height=Math.floor(innerHeight*devicePixelRatio);draw(active)}
-  function draw(i){const img=frames[i];if(!img?.complete||!img.naturalWidth)return;const cw=canvas.width,ch=canvas.height;const scale=Math.max(cw/img.naturalWidth,ch/img.naturalHeight);const w=img.naturalWidth*scale,h=img.naturalHeight*scale;ctx.clearRect(0,0,cw,ch);ctx.drawImage(img,(cw-w)/2,(ch-h)/2,w,h);}
-  function setStatus(){if(status)status.textContent=`FRAME ${String(active+1).padStart(4,'0')} / ${Math.max(loaded,1).toString().padStart(4,'0')}`}
-  resize();addEventListener('resize',resize);
-  // Load sequentially so a missing frame stops discovery cleanly rather than firing hundreds of requests.
-  let n=1;
-  function loadNext(){
-    if(n>count){if(!loaded) fallback?.classList.remove('hidden');return;}
-    const img=new Image(); const idx=frames.length; img.decoding='async';
-    img.onload=()=>{frames.push(img);loaded++; if(idx===0){fallback?.classList.add('hidden');draw(0)};n++;loadNext()};
-    img.onerror=()=>{failed++; if(loaded>0){n=count+1;setStatus()}else{n++;loadNext()}};
-    img.src=makeSrc(n);
-  }
-  loadNext();
-  function render(progress){if(!loaded)return;active=Math.min(loaded-1,Math.max(0,Math.round(progress*(loaded-1))));draw(active);setStatus()}
-  const hero=document.querySelector('.hero');
-  let autoStart=performance.now();
-  function auto(){if(document.hidden)return;const p=((performance.now()-autoStart)/10000)%1;render(p);requestAnimationFrame(auto)}
-  requestAnimationFrame(auto);
-  if(hero){let last=0;addEventListener('scroll',()=>{const r=hero.getBoundingClientRect();const total=Math.max(1,hero.offsetHeight-innerHeight);const p=Math.min(1,Math.max(0,-r.top/total)); if(Math.abs(p-last)>.002){last=p;render(p);autoStart=performance.now()-(p*10000)}} ,{passive:true})}
-})();
+
+(()=>{const c=document.querySelector('#hero-frame'),ctx=c?.getContext('2d'),frames=Array.from({length:300},(_,i)=>`assets/frames/frame_${String(i).padStart(4,'0')}.webp`);if(!c||!ctx)return;let imgs=[],loaded=0,active=false;const resize=()=>{c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)};resize();addEventListener('resize',resize);function drawFallback(t){const w=innerWidth,h=innerHeight;ctx.clearRect(0,0,w,h);const g=ctx.createRadialGradient(w*.58,h*.42,20,w*.58,h*.42,Math.max(w,h)*.65);g.addColorStop(0,'rgba(200,255,61,.15)');g.addColorStop(.45,'rgba(83,230,255,.05)');g.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=g;ctx.fillRect(0,0,w,h);ctx.save();ctx.translate(w*.62,h*.47);ctx.rotate(Math.sin(t*.00035)*.03);ctx.strokeStyle='rgba(200,255,61,.24)';ctx.lineWidth=1;for(let r=40;r<Math.min(w,h)*.32;r+=26){ctx.beginPath();ctx.arc(0,0,r+t*.01%(r+1),0,Math.PI*2);ctx.stroke()}ctx.restore();requestAnimationFrame(drawFallback)}drawFallback(0);let idx=0,playing=true,last=0;function load(i){if(imgs[i])return;const im=new Image();im.src=frames[i];im.onload=()=>{imgs[i]=im;loaded++;if(i===0)render(0)};im.onerror=()=>{};}
+for(let i=0;i<14;i++)load(i);function render(i){const im=imgs[i];if(!im)return;const w=innerWidth,h=innerHeight,ratio=Math.max(w/im.width,h/im.height),dw=im.width*ratio,dh=im.height*ratio;ctx.clearRect(0,0,w,h);ctx.drawImage(im,(w-dw)/2,(h-dh)/2,dw,dh)}function step(t){if(!playing)return; if(t-last>45){idx=(idx+1)%300;load(idx);load((idx+8)%300);if(imgs[idx])render(idx);last=t}requestAnimationFrame(step)}requestAnimationFrame(step);let ticking=false;addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);const p=Math.min(1,scrollY/Math.min(innerHeight*1.15,max));idx=Math.floor(p*299);load(idx);if(imgs[idx])render(idx);playing=false;setTimeout(()=>playing=true,250);ticking=false})},{passive:true});})();

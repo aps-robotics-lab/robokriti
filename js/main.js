@@ -1,52 +1,15 @@
-(() => {
-  const $ = (s, r=document) => r.querySelector(s);
-  const $$ = (s, r=document) => [...r.querySelectorAll(s)];
-  const page = document.body.dataset.page || '';
-  const deadline = new Date('2026-09-03T23:59:59+05:30');
 
-  document.documentElement.classList.add('js');
-  const header = $('.site-header');
-  const menuToggle = $('.menu-toggle');
-  const mobileMenu = $('.mobile-menu');
-  menuToggle?.addEventListener('click', () => mobileMenu?.classList.toggle('open'));
-  window.addEventListener('scroll', () => header?.classList.toggle('scrolled', scrollY > 30), {passive:true});
-
-  // Active navigation + close mobile menu.
-  $$(`[data-nav="${page}"]`).forEach(a => a.classList.add('active'));
-  $$('.mobile-menu a').forEach(a => a.addEventListener('click',()=>mobileMenu?.classList.remove('open')));
-
-  // Reveal motion.
-  const io = new IntersectionObserver(entries => entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-  }), {threshold:.12});
-  $$('.reveal,.stagger').forEach(el => io.observe(el));
-
-  // Cursor light on capable devices.
-  if (matchMedia('(pointer:fine)').matches) {
-    const glow=document.createElement('div'); glow.className='cursor-glow'; document.body.appendChild(glow);
-    window.addEventListener('pointermove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'},{passive:true});
-  }
-
-  // Lightweight page transition.
-  $$('a[href]').forEach(a => {
-    const href=a.getAttribute('href');
-    if(!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto:') || a.target==='_blank') return;
-    a.addEventListener('click',e=>{if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;e.preventDefault();document.body.style.opacity='.35';setTimeout(()=>location.href=href,180)});
-  });
-
-  // Countdown.
-  function tick(){
-    const diff=Math.max(0,deadline-Date.now());
-    const days=Math.floor(diff/86400000), hrs=Math.floor(diff/3600000)%24, mins=Math.floor(diff/60000)%60, secs=Math.floor(diff/1000)%60;
-    ['days','hours','minutes','seconds'].forEach((k,i)=>{const el=$(`[data-countdown="${k}"]`);if(el)el.textContent=String([days,hrs,mins,secs][i]).padStart(2,'0')});
-    const closed=diff<=0; $$('[data-registration-cta]').forEach(el=>{el.classList.toggle('hidden',closed)});
-    $$('[data-registration-closed]').forEach(el=>{el.classList.toggle('hidden',!closed)});
-  }
-  tick(); setInterval(tick,1000);
-
-  // External Firebase scripts load before this file on pages that need them.
-  window.RoboUI={toast(message,type=''){
-    let t=$('.toast'); if(!t){t=document.createElement('div');t.className='toast';document.body.appendChild(t)}
-    t.textContent=message;t.className='toast show '+type;setTimeout(()=>t.classList.remove('show'),4200);
-  }, deadline};
-})();
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+window.addEventListener('load',()=>setTimeout(()=>$('.loader')?.classList.add('hide'),450));
+const top=$('.topbar'); addEventListener('scroll',()=>top?.classList.toggle('scrolled',scrollY>30));
+const menu=$('.menu'), overlay=$('.menu-overlay'); menu?.addEventListener('click',()=>overlay.classList.toggle('open')); overlay?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>overlay.classList.remove('open')));
+const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.12}); $$('.reveal').forEach(x=>io.observe(x));
+const cursor=$('.cursor'); if(cursor){addEventListener('pointermove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px'}); $$('a,button,.event-card,summary').forEach(x=>{x.addEventListener('mouseenter',()=>cursor.classList.add('big'));x.addEventListener('mouseleave',()=>cursor.classList.remove('big'))})}
+// smooth scrolling without a dependency
+let sy=scrollY, target=scrollY, raf; addEventListener('wheel',e=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return; target=Math.max(0,Math.min(document.documentElement.scrollHeight-innerHeight,target+e.deltaY*.55)); cancelAnimationFrame(raf); const tick=()=>{sy+=(target-sy)*.12; scrollTo(0,sy); if(Math.abs(target-sy)>0.5)raf=requestAnimationFrame(tick)};raf=requestAnimationFrame(tick)},{passive:true}); addEventListener('scroll',()=>{if(Math.abs(scrollY-target)>100)target=scrollY},{passive:true});
+function particles(canvas,count=90,accent='#c8ff3d'){if(!canvas)return;const ctx=canvas.getContext('2d');let dpr=Math.min(devicePixelRatio||1,2),w,h,ps=[],mx=0,my=0;function resize(){w=canvas.clientWidth;h=canvas.clientHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ps=Array.from({length:count},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.5+.3,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,a:Math.random()*.7+.15}))}resize();addEventListener('resize',resize);canvas.parentElement?.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});function draw(){ctx.clearRect(0,0,w,h);for(const p of ps){let dx=mx-p.x,dy=my-p.y,dist=Math.hypot(dx,dy);if(dist<130){p.x-=dx/dist*.15;p.y-=dy/dist*.15}p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;ctx.beginPath();ctx.fillStyle=accent;ctx.globalAlpha=p.a;ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;requestAnimationFrame(draw)}draw()}
+particles($('#hero-particles'),130,'#c8ff3d'); $$('.event-particles').forEach((c,i)=>particles(c,38,['#c8ff3d','#53e6ff','#ff6969','#9cff74'][i%4]));
+// magnetic tilt
+$$('.tilt').forEach(card=>card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform=`perspective(900px) rotateX(${y*-3}deg) rotateY(${x*3}deg)`}));
+$$('.tilt').forEach(card=>card.addEventListener('pointerleave',()=>card.style.transform=''));
+function countdown(){const el=$('[data-countdown]');if(!el)return;const end=new Date('2026-09-03T23:59:59+05:30').getTime();const tick=()=>{let d=Math.max(0,end-Date.now());if(d<=0){el.textContent='REGISTRATION CLOSED';return}let days=Math.floor(d/86400000),hrs=Math.floor(d%86400000/3600000),min=Math.floor(d%3600000/60000),sec=Math.floor(d%60000/1000);el.textContent=`${String(days).padStart(2,'0')} : ${String(hrs).padStart(2,'0')} : ${String(min).padStart(2,'0')} : ${String(sec).padStart(2,'0')}`};tick();setInterval(tick,1000)}countdown();
