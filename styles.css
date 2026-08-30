@@ -1,10 +1,2722 @@
-*{box-sizing:border-box}html{scroll-behavior:smooth;background:#05070b}body{margin:0;background:#05070b;color:#eef5f7;font-family:"Space Grotesk",system-ui,sans-serif;overflow-x:hidden}a{color:inherit;text-decoration:none}button{font:inherit}
-:root{--cyan:#48e7ff;--orange:#ff7a38;--muted:#89959d;--line:rgba(255,255,255,.13)}
-#preloader{position:fixed;inset:0;z-index:100;background:#05070b;display:grid;place-content:center;gap:18px;padding:24px;transition:opacity .6s,visibility .6s}.loader-mark{font:700 36px/1 "Space Grotesk";letter-spacing:-2px}.loader-mark span{color:var(--cyan);font-size:14px;margin-left:4px}.loader-line{height:2px;background:#172027;width:min(320px,70vw);overflow:hidden}.loader-line i{display:block;width:0;height:100%;background:var(--cyan);transition:width .2s}.loader-line+#loaderText{font:600 10px/1 "Space Grotesk";letter-spacing:1.8px;color:#718087}
-.nav{position:fixed;z-index:20;top:0;left:0;right:0;height:78px;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(#05070bcc,transparent);backdrop-filter:blur(4px)}.brand{display:flex;align-items:center;gap:12px;font:700 12px "Space Grotesk";letter-spacing:.7px}.brand b{color:var(--cyan)}.brand-logo{width:30px;height:30px;object-fit:contain;mix-blend-mode:screen;filter:brightness(1.08) contrast(1.08)}.brand-divider{width:1px;height:18px;background:var(--line)}.brand-wordmark{font-family:"Space Grotesk"}.nav-links{display:flex;gap:32px}.nav-links a{font:600 10px "Space Grotesk";letter-spacing:1.7px;color:#8e9ba2;transition:.25s}.nav-links a:hover,.nav-links .active{color:#fff}.menu{display:none;background:none;border:0;color:#fff}
-.hero{height:200vh;position:relative}.hero-visual{position:sticky;top:0;height:100vh;overflow:hidden;background:#05070b}.hero-visual canvas{width:100%;height:100%;display:block;object-fit:cover}.scanlines{position:absolute;inset:0;pointer-events:none;opacity:.06;background:repeating-linear-gradient(0deg,transparent 0 3px,#fff 4px)}.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 48%,transparent 15%,rgba(5,7,11,.16) 60%,rgba(5,7,11,.85) 100%)}.hero-visual:after{content:"";position:absolute;left:5%;bottom:12%;width:120px;height:120px;border-left:1px solid rgba(72,231,255,.25);border-bottom:1px solid rgba(255,122,56,.25);transform:skewY(-12deg);pointer-events:none}.hero-copy:after{content:"";position:absolute;left:-28px;top:44px;width:1px;height:145px;background:linear-gradient(var(--cyan),transparent,var(--orange));opacity:.7}
-.hero-hud{position:absolute;z-index:3;top:104px;left:clamp(20px,4vw,64px);right:clamp(20px,4vw,64px);display:flex;justify-content:space-between;font:600 9px "Space Grotesk";letter-spacing:1.8px;color:#9aa8ae}.hero-hud span:last-child{color:var(--cyan)}
-.hero-copy{position:absolute;z-index:4;left:clamp(20px,7vw,112px);top:50%;transform:translateY(-50%);max-width:720px;text-shadow:0 3px 28px #000}.hero-serial{font:600 8px "Space Grotesk";letter-spacing:2.4px;color:#a5b1b6;margin:0 0 18px}.hero-serial span{display:inline-block;width:34px;height:1px;background:linear-gradient(90deg,var(--cyan),var(--orange));vertical-align:middle;margin:0 9px}.eyebrow{font:600 9px "Space Grotesk";letter-spacing:2px;color:var(--cyan);margin:0 0 16px}.eyebrow span{color:var(--orange);padding:0 4px}.hero-copy h1{margin:0;line-height:.72;letter-spacing:-.075em}.hero-copy h1 span{display:block}.robo-word{font:700 clamp(48px,7vw,96px)/.9 "Space Grotesk";letter-spacing:.04em;color:#e8f1f3}.kriti-word{font:800 clamp(84px,14vw,190px)/.72 "Syne";letter-spacing:-.095em;background:linear-gradient(100deg,#f2f6f7 0%,#c7d0d3 48%,#ff8b48 78%,#9b7cff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 8px 25px rgba(255,122,56,.09))}.hero-copy h1 em{display:block;font:700 clamp(17px,2.5vw,30px)/1 "Space Grotesk";letter-spacing:.38em;color:var(--cyan);margin:25px 0 0 7px;font-style:normal}.title-rule{display:flex;align-items:center;gap:10px;margin:24px 0 0 8px;color:#78858b;font:600 8px "Space Grotesk";letter-spacing:1.6px}.title-rule i{display:block;width:55px;height:1px;background:linear-gradient(90deg,var(--orange),var(--cyan))}.tagline{font:600 clamp(15px,2vw,22px)/1.2 Inter;margin:28px 0 8px}.subline{max-width:470px;color:#b2bdc1;font-size:12px;line-height:1.7;margin:0}.hero-actions{display:flex;gap:12px;margin-top:28px}.cta{display:inline-flex;align-items:center;gap:18px;padding:13px 18px;font:700 9px "Space Grotesk";letter-spacing:1.4px;border:1px solid var(--line);transition:.25s}.cta.primary{background:#eef5f7;color:#05070b;border-color:#eef5f7}.cta.primary:hover{background:var(--cyan);border-color:var(--cyan);transform:translateY(-2px)}.cta.ghost:hover{border-color:var(--cyan);color:var(--cyan)}.cta span{font-size:14px}.hero-data{position:absolute;z-index:4;bottom:55px;left:clamp(20px,4vw,64px);right:clamp(20px,4vw,64px);display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);padding-top:15px}.hero-data div{display:grid;gap:7px}.hero-data small{font:600 8px "Space Grotesk";letter-spacing:1.4px;color:#718087}.hero-data strong{font:700 11px "Space Grotesk";letter-spacing:1px}.scroll-cue{position:absolute;z-index:4;right:clamp(20px,4vw,64px);bottom:58px;font:600 8px "Space Grotesk";letter-spacing:1.4px;color:#8d9aa0;writing-mode:vertical-rl;display:flex;gap:10px;align-items:center}.scroll-cue span{width:1px;height:45px;background:linear-gradient(var(--cyan),transparent)}.frame-counter{position:absolute;z-index:4;right:clamp(20px,4vw,64px);top:50%;font:600 10px "Space Grotesk";letter-spacing:1px}.frame-counter i{color:#59656b;font-style:normal;margin:0 6px}.progress{position:absolute;z-index:5;right:0;top:0;width:2px;height:100%;background:#172027}.progress i{display:block;height:0;width:100%;background:var(--cyan)}
-.mission,.battle,.messages,.register{position:relative;padding:16vh clamp(24px,8vw,130px);border-top:1px solid var(--line);background:#070a0e}.mission{min-height:90vh;display:grid;align-content:center;grid-template-columns:1fr 1fr;gap:6vw}.section-index{font:600 9px "Space Grotesk";letter-spacing:2px;color:var(--cyan);margin:0}.mission h2,.battle h2,.register h2{font:700 clamp(52px,8vw,120px)/.84 "Space Grotesk";letter-spacing:-.07em;margin:0}.mission h2 span,.battle h2 span,.register h2 span{color:#69757b}.mission>p:last-child{align-self:end;max-width:390px;color:#9ba7ac;font-size:14px;line-height:1.8}.battle{min-height:100vh}.battle h2{margin:50px 0 70px}.discipline-list{border-top:1px solid var(--line)}.discipline-list article{min-height:115px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:80px 1fr auto;align-items:center;gap:20px;transition:.3s}.discipline-list article:hover{padding-left:18px;background:linear-gradient(90deg,rgba(72,231,255,.06),transparent)}.discipline-list b{font:600 10px "Space Grotesk";color:#617078}.discipline-list h3{font:700 clamp(24px,4vw,52px) "Space Grotesk";margin:0;letter-spacing:-.04em}.discipline-list span{font:600 9px "Space Grotesk";letter-spacing:1.6px;color:#748087}.messages{min-height:90vh}.message-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin-top:60px}.message-grid article{background:#070a0e;min-height:430px;padding:40px;display:flex;flex-direction:column;justify-content:flex-end}.message-grid span{font:600 9px "Space Grotesk";letter-spacing:2px;color:var(--cyan)}.message-grid h2{font:700 clamp(40px,6vw,76px)/.86 "Space Grotesk";letter-spacing:-.06em;margin:18px 0}.message-grid p{color:#8e9aa0;max-width:420px;line-height:1.7;font-size:13px}.register{min-height:80vh;display:grid;align-content:center}.register h2{margin:45px 0 40px}.large{width:max-content;padding:18px 24px}.date-line{font:600 9px "Space Grotesk";letter-spacing:1.5px;color:#6f7b81;margin-top:22px}
-footer{padding:45px clamp(24px,4vw,64px);border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:end;background:#05070b}footer strong{font:700 22px "Space Grotesk"}footer strong span{color:var(--cyan)}footer small{display:block;color:#6f7b81;font-size:10px;margin-top:10px}footer a{font:600 11px "Space Grotesk";letter-spacing:1px;color:#aab5ba}
-@media(max-width:760px){.nav{height:66px}.nav-links{display:none}.menu{display:flex;flex-direction:column;gap:5px}.menu span{display:block;width:23px;height:1px;background:#fff}.hero{height:180vh}.hero-hud{top:84px}.hero-copy{top:47%;left:22px;right:22px}.hero-copy h1 .robo-word{font-size:clamp(42px,13vw,72px)}.hero-copy h1 .kriti-word{font-size:clamp(72px,23vw,120px)}.hero-copy h1 em{font-size:17px;margin-top:21px}.title-rule{font-size:7px}.hero-copy:after{left:-12px;top:30px;height:105px}.subline{font-size:11px}.hero-actions{flex-wrap:wrap}.hero-data{grid-template-columns:repeat(2,1fr);gap:15px 20px;bottom:22px}.scroll-cue{display:none}.frame-counter{top:auto;bottom:145px;right:22px}.mission{grid-template-columns:1fr;min-height:75vh;gap:40px}.mission>p:last-child{align-self:auto}.battle,.messages,.register,.mission{padding:13vh 22px}.battle h2{margin:40px 0}.discipline-list article{grid-template-columns:40px 1fr}.discipline-list span{display:none}.message-grid{grid-template-columns:1fr}.message-grid article{min-height:330px;padding:28px}.register h2{font-size:58px}footer{align-items:flex-start;gap:25px;flex-direction:column}}
+/* ============================================================
+   ROBO KRITI 2026 — HOME PAGE MASTER CSS
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap');
+
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: #05070b;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #05070b;
+  color: #eef5f7;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body.registration-closed {
+  --orange: #ff5757;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img,
+canvas {
+  max-width: 100%;
+}
+
+::selection {
+  background: rgba(72, 231, 255, .25);
+  color: #fff;
+}
+
+
+/* ============================================================
+   VARIABLES
+   ============================================================ */
+
+:root {
+
+  --bg: #05070b;
+  --surface: #070a0e;
+  --surface-2: #0a0e13;
+
+  --white: #eef5f7;
+  --muted: #89959d;
+  --dim: #68757b;
+
+  --cyan: #48e7ff;
+  --orange: #ff7a38;
+  --purple: #9b7cff;
+
+  --line: rgba(255, 255, 255, .13);
+  --line-soft: rgba(255, 255, 255, .075);
+
+  --max-width: 1500px;
+
+}
+
+
+/* ============================================================
+   PRELOADER
+   ============================================================ */
+
+#preloader {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  display: grid;
+
+  place-content: center;
+
+  gap: 18px;
+
+  padding: 24px;
+
+  background: var(--bg);
+
+  transition:
+    opacity .6s ease,
+    visibility .6s ease;
+
+}
+
+.loader-mark {
+
+  font:
+    700 36px/1
+    "Space Grotesk";
+
+  letter-spacing: -2px;
+
+}
+
+.loader-mark span {
+
+  color: var(--cyan);
+
+  font-size: 14px;
+
+  margin-left: 5px;
+
+}
+
+.loader-line {
+
+  width: min(320px, 70vw);
+
+  height: 2px;
+
+  overflow: hidden;
+
+  background: #172027;
+
+}
+
+.loader-line i {
+
+  display: block;
+
+  width: 0;
+
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--cyan),
+      var(--orange)
+    );
+
+  transition:
+    width .2s ease;
+
+}
+
+#loaderText {
+
+  font:
+    600 10px/1
+    "Space Grotesk";
+
+  letter-spacing: 1.8px;
+
+  color: #718087;
+
+}
+
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+
+.nav {
+
+  position: fixed;
+
+  z-index: 100;
+
+  top: 0;
+
+  left: 0;
+
+  right: 0;
+
+  height: 78px;
+
+  padding:
+    0
+    clamp(20px, 4vw, 64px);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  background:
+    linear-gradient(
+      #05070bd9,
+      transparent
+    );
+
+  backdrop-filter:
+    blur(4px);
+
+  -webkit-backdrop-filter:
+    blur(4px);
+
+  transition:
+    background .35s ease,
+    height .35s ease,
+    border-color .35s ease;
+
+}
+
+.nav.scrolled {
+
+  height: 68px;
+
+  background:
+    rgba(5, 7, 11, .84);
+
+  border-bottom:
+    1px solid var(--line-soft);
+
+}
+
+.brand {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  font:
+    700 12px
+    "Space Grotesk";
+
+  letter-spacing: .7px;
+
+}
+
+.brand b {
+
+  color: var(--cyan);
+
+}
+
+.brand-logo {
+
+  width: 30px;
+
+  height: 30px;
+
+  object-fit: contain;
+
+  mix-blend-mode: screen;
+
+  filter:
+    brightness(1.08)
+    contrast(1.08);
+
+}
+
+.brand-divider {
+
+  width: 1px;
+
+  height: 18px;
+
+  background: var(--line);
+
+}
+
+.brand-wordmark {
+
+  font-family:
+    "Space Grotesk";
+
+}
+
+.nav-links {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 32px;
+
+}
+
+.nav-links a {
+
+  position: relative;
+
+  font:
+    600 10px
+    "Space Grotesk";
+
+  letter-spacing: 1.7px;
+
+  color: #8e9ba2;
+
+  transition:
+    color .25s ease;
+
+}
+
+.nav-links a::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: -7px;
+
+  width: 0;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--cyan),
+      var(--orange)
+    );
+
+  transition:
+    width .3s ease;
+
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+
+  color: #fff;
+
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+
+  width: 100%;
+
+}
+
+.menu {
+
+  display: none;
+
+  align-items: center;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  padding: 5px;
+
+  background: none;
+
+  border: 0;
+
+  color: #fff;
+
+}
+
+.menu span {
+
+  display: block;
+
+  width: 23px;
+
+  height: 1px;
+
+  background: #fff;
+
+}
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero {
+
+  position: relative;
+
+  height: 200vh;
+
+}
+
+.hero-visual {
+
+  position: sticky;
+
+  top: 0;
+
+  height: 100vh;
+
+  overflow: hidden;
+
+  background: var(--bg);
+
+}
+
+.hero-visual canvas {
+
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+}
+
+.scanlines {
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: .045;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 3px,
+      #fff 4px
+    );
+
+}
+
+.vignette {
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 50% 48%,
+      transparent 15%,
+      rgba(5, 7, 11, .16) 60%,
+      rgba(5, 7, 11, .88) 100%
+    );
+
+}
+
+.hero-visual::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 5%;
+
+  bottom: 12%;
+
+  width: 120px;
+
+  height: 120px;
+
+  border-left:
+    1px solid
+    rgba(72, 231, 255, .25);
+
+  border-bottom:
+    1px solid
+    rgba(255, 122, 56, .25);
+
+  transform:
+    skewY(-12deg);
+
+  pointer-events: none;
+
+}
+
+
+/* ============================================================
+   HERO HUD
+   ============================================================ */
+
+.hero-hud {
+
+  position: absolute;
+
+  z-index: 3;
+
+  top: 104px;
+
+  left: clamp(20px, 4vw, 64px);
+
+  right: clamp(20px, 4vw, 64px);
+
+  display: flex;
+
+  justify-content: space-between;
+
+  font:
+    600 9px
+    "Space Grotesk";
+
+  letter-spacing: 1.8px;
+
+  color: #9aa8ae;
+
+}
+
+.hero-hud span:last-child {
+
+  color: var(--cyan);
+
+}
+
+
+/* ============================================================
+   HERO COPY
+   ============================================================ */
+
+.hero-copy {
+
+  position: absolute;
+
+  z-index: 4;
+
+  left: clamp(20px, 7vw, 112px);
+
+  top: 50%;
+
+  max-width: 720px;
+
+  transform:
+    translateY(-50%);
+
+  text-shadow:
+    0 3px 28px #000;
+
+  will-change:
+    transform,
+    opacity;
+
+}
+
+.hero-copy::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: -28px;
+
+  top: 44px;
+
+  width: 1px;
+
+  height: 145px;
+
+  background:
+    linear-gradient(
+      var(--cyan),
+      transparent,
+      var(--orange)
+    );
+
+  opacity: .7;
+
+}
+
+.hero-serial {
+
+  margin: 0 0 18px;
+
+  font:
+    600 8px
+    "Space Grotesk";
+
+  letter-spacing: 2.4px;
+
+  color: #a5b1b6;
+
+}
+
+.hero-serial span {
+
+  display: inline-block;
+
+  width: 34px;
+
+  height: 1px;
+
+  margin:
+    0 9px;
+
+  vertical-align: middle;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--cyan),
+      var(--orange)
+    );
+
+}
+
+.eyebrow {
+
+  margin: 0 0 16px;
+
+  font:
+    600 9px
+    "Space Grotesk";
+
+  letter-spacing: 2px;
+
+  color: var(--cyan);
+
+}
+
+.eyebrow span {
+
+  padding: 0 4px;
+
+  color: var(--orange);
+
+}
+
+.hero-copy h1 {
+
+  margin: 0;
+
+  line-height: .72;
+
+  letter-spacing: -.075em;
+
+}
+
+.hero-copy h1 span {
+
+  display: block;
+
+}
+
+.robo-word {
+
+  font:
+    700 clamp(48px, 7vw, 96px)/.9
+    "Space Grotesk";
+
+  letter-spacing: .04em;
+
+  color: #e8f1f3;
+
+}
+
+.kriti-word {
+
+  font:
+    800 clamp(84px, 14vw, 190px)/.72
+    "Syne";
+
+  letter-spacing: -.095em;
+
+  background:
+    linear-gradient(
+      100deg,
+      #f2f6f7 0%,
+      #c7d0d3 48%,
+      #ff8b48 78%,
+      #9b7cff 100%
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+
+  filter:
+    drop-shadow(
+      0 8px 25px
+      rgba(255, 122, 56, .09)
+    );
+
+}
+
+.hero-copy h1 em {
+
+  display: block;
+
+  margin:
+    25px 0 0 7px;
+
+  font:
+    700 clamp(17px, 2.5vw, 30px)/1
+    "Space Grotesk";
+
+  letter-spacing: .38em;
+
+  color: var(--cyan);
+
+  font-style: normal;
+
+}
+
+.title-rule {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin:
+    24px 0 0 8px;
+
+  color: #78858b;
+
+  font:
+    600 8px
+    "Space Grotesk";
+
+  letter-spacing: 1.6px;
+
+}
+
+.title-rule i {
+
+  display: block;
+
+  width: 55px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--orange),
+      var(--cyan)
+    );
+
+}
+
+.tagline {
+
+  margin:
+    28px 0 8px;
+
+  font:
+    600 clamp(15px, 2vw, 22px)/1.2
+    Inter;
+
+}
+
+.subline {
+
+  max-width: 470px;
+
+  margin: 0;
+
+  color: #b2bdc1;
+
+  font-size: 12px;
+
+  line-height: 1.7;
+
+}
+
+
+/* ============================================================
+   HERO BUTTONS
+   ============================================================ */
+
+.hero-actions {
+
+  display: flex;
+
+  gap: 12px;
+
+  margin-top: 28px;
+
+}
+
+.cta {
+
+  position: relative;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  padding:
+    13px 18px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    var(--line);
+
+  font:
+    700 9px
+    "Space Grotesk";
+
+  letter-spacing: 1.4px;
+
+  transition:
+    transform .25s ease,
+    color .25s ease,
+    border-color .25s ease,
+    background .25s ease;
+
+}
+
+.cta span {
+
+  font-size: 14px;
+
+}
+
+.cta.primary {
+
+  color: #05070b;
+
+  background: #eef5f7;
+
+  border-color: #eef5f7;
+
+}
+
+.cta.primary:hover {
+
+  background: var(--cyan);
+
+  border-color: var(--cyan);
+
+  transform:
+    translateY(-2px);
+
+}
+
+.cta.ghost {
+
+  color: #d7e0e3;
+
+}
+
+.cta.ghost:hover {
+
+  color: var(--cyan);
+
+  border-color: var(--cyan);
+
+}
+
+
+/* ============================================================
+   HERO DATA
+   ============================================================ */
+
+.hero-data {
+
+  position: absolute;
+
+  z-index: 4;
+
+  bottom: 55px;
+
+  left: clamp(20px, 4vw, 64px);
+
+  right: clamp(20px, 4vw, 64px);
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  padding-top: 15px;
+
+  border-top:
+    1px solid
+    var(--line);
+
+  will-change:
+    transform,
+    opacity;
+
+}
+
+.hero-data div {
+
+  display: grid;
+
+  gap: 7px;
+
+}
+
+.hero-data small {
+
+  font:
+    600 8px
+    "Space Grotesk";
+
+  letter-spacing: 1.4px;
+
+  color: #718087;
+
+}
+
+.hero-data strong {
+
+  font:
+    700 11px
+    "Space Grotesk";
+
+  letter-spacing: 1px;
+
+}
+
+
+/* ============================================================
+   SCROLL CUE
+   ============================================================ */
+
+.scroll-cue {
+
+  position: absolute;
+
+  z-index: 4;
+
+  right: clamp(20px, 4vw, 64px);
+
+  bottom: 58px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  color: #8d9aa0;
+
+  font:
+    600 8px
+    "Space Grotesk";
+
+  letter-spacing: 1.4px;
+
+  writing-mode: vertical-rl;
+
+}
+
+.scroll-cue span {
+
+  width: 1px;
+
+  height: 45px;
+
+  background:
+    linear-gradient(
+      var(--cyan),
+      transparent
+    );
+
+  animation:
+    cuePulse 1.8s
+    ease-in-out
+    infinite;
+
+}
+
+@keyframes cuePulse {
+
+  0%,
+  100% {
+    transform: scaleY(.5);
+    opacity: .35;
+  }
+
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+
+}
+
+
+/* ============================================================
+   FRAME COUNTER
+   ============================================================ */
+
+.frame-counter {
+
+  position: absolute;
+
+  z-index: 4;
+
+  top: 50%;
+
+  right: clamp(20px, 4vw, 64px);
+
+  font:
+    600 10px
+    "Space Grotesk";
+
+  letter-spacing: 1px;
+
+  opacity: .45;
+
+}
+
+.frame-counter i {
+
+  margin:
+    0 6px;
+
+  color: #59656b;
+
+  font-style: normal;
+
+}
+
+
+/* ============================================================
+   VERTICAL PROGRESS
+   ============================================================ */
+
+.progress {
+
+  position: absolute;
+
+  z-index: 5;
+
+  top: 0;
+
+  right: 0;
+
+  width: 2px;
+
+  height: 100%;
+
+  background: #172027;
+
+}
+
+.progress i {
+
+  display: block;
+
+  width: 100%;
+
+  height: 0;
+
+  background:
+    linear-gradient(
+      var(--cyan),
+      var(--orange)
+    );
+
+}
+
+
+/* ============================================================
+   GENERAL SECTION
+   ============================================================ */
+
+.mission,
+.battle,
+.messages,
+.countdown-section,
+.faq-section,
+.register,
+.final-cta {
+
+  position: relative;
+
+  border-top:
+    1px solid
+    var(--line);
+
+  background:
+    var(--surface);
+
+  will-change:
+    transform,
+    opacity;
+
+}
+
+
+/* ============================================================
+   MISSION
+   ============================================================ */
+
+.mission {
+
+  min-height: 90vh;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  align-content: center;
+
+  gap: 6vw;
+
+  padding:
+    16vh
+    clamp(24px, 8vw, 130px);
+
+}
+
+.section-index {
+
+  margin: 0;
+
+  font:
+    600 9px
+    "Space Grotesk";
+
+  letter-spacing: 2px;
+
+  color: var(--cyan);
+
+}
+
+.mission h2,
+.battle h2,
+.register h2 {
+
+  margin: 0;
+
+  font:
+    700 clamp(52px, 8vw, 120px)/.84
+    "Space Grotesk";
+
+  letter-spacing: -.07em;
+
+}
+
+.mission h2 span,
+.battle h2 span,
+.register h2 span {
+
+  color: #69757b;
+
+}
+
+.mission > p:last-child {
+
+  align-self: end;
+
+  max-width: 390px;
+
+  margin: 0;
+
+  color: #9ba7ac;
+
+  font-size: 14px;
+
+  line-height: 1.8;
+
+}
+
+
+/* ============================================================
+   BATTLE
+   ============================================================ */
+
+.battle {
+
+  min-height: 100vh;
+
+  padding:
+    16vh
+    clamp(24px, 8vw, 130px);
+
+}
+
+.battle h2 {
+
+  margin:
+    50px 0 70px;
+
+}
+
+.discipline-list {
+
+  border-top:
+    1px solid
+    var(--line);
+
+}
+
+.discipline-list article {
+
+  position: relative;
+
+  min-height: 115px;
+
+  display: grid;
+
+  grid-template-columns:
+    80px 1fr auto;
+
+  align-items: center;
+
+  gap: 20px;
+
+  border-bottom:
+    1px solid
+    var(--line);
+
+  transition:
+    padding .35s ease,
+    background .35s ease,
+    transform .3s ease;
+
+}
+
+.discipline-list article::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: -1px;
+
+  width: 0;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--cyan),
+      var(--orange)
+    );
+
+  transition:
+    width .45s ease;
+
+}
+
+.discipline-list article:hover::after {
+
+  width: 100%;
+
+}
+
+.discipline-list article:hover {
+
+  padding-left: 18px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(72, 231, 255, .055),
+      transparent
+    );
+
+}
+
+.discipline-list b {
+
+  font:
+    600 10px
+    "Space Grotesk";
+
+  color: #617078;
+
+}
+
+.discipline-list h3 {
+
+  margin: 0;
+
+  font:
+    700 clamp(24px, 4vw, 52px)
+    "Space Grotesk";
+
+  letter-spacing: -.04em;
+
+}
+
+.discipline-list span {
+
+  font:
+    600 9px
+    "Space Grotesk";
+
+  letter-spacing: 1.6px;
+
+  color: #748087;
+
+}
+
+
+/* ============================================================
+   COUNTDOWN
+   ============================================================ */
+
+.countdown-section {
+
+  min-height: 85vh;
+
+  padding:
+    15vh
+    clamp(24px, 8vw, 130px);
+
+  background: #06080c;
+
+}
+
+.countdown-kicker {
+
+  font:
+    600 9px
+    "Space Grotesk";
+
+  letter-spacing: 2px;
+
+  color: var(--cyan);
+
+}
+
+.countdown-layout {
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  align-items: end;
+
+  gap: 8vw;
+
+  margin-top: 70px;
+
+}
+
+.countdown-copy p {
+
+  margin: 0;
+
+  font:
+    600 9px
+    "Space Grotesk";
+
+  letter-spacing: 2px;
+
+  color: #728087;
+
+}
+
+.countdown-copy h2 {
+
+  margin:
+    20px 0;
+
+  font:
+    800 clamp(70px, 10vw, 150px)/.8
+    "Syne";
+
+  letter-spacing: -.08em;
+
+}
+
+.countdown-copy h2 span {
+
+  display: block;
+
+  color: #68757b;
+
+}
+
+.countdown-copy small {
+
+  font:
+    600 9px
+    "Space Grotesk";
+
+  letter-spacing: 1.5px;
+
+  color: #68757b;
+
+}
+
+.countdown-clock {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: clamp(8px, 2vw, 25px);
+
+}
+
+.countdown-clock div {
+
+  display: grid;
+
+  gap: 8px;
+
+}
+
+.countdown-clock strong {
+
+  font:
+    700 clamp(30px, 5vw, 70px)
+    "Space Grotesk";
+
+  letter-spacing: -.05em;
+
+}
+
+.countdown-clock span {
+
+  font:
+    600 8px
+    "Space Grotesk";
+
+  letter-spacing: 1.5px;
+
+  color: #647178;
+
+}
+
+.countdown-clock i {
+
+  font-size: 25px;
+
+  color: #4d585e;
+
+}
+
+.deadline-line {
+
+  margin-top: 80px;
+
+  padding-top: 18px;
+
+  border-top:
+    1px solid
+    var(--line);
+
+  font:
+    600 9px
+    "Space Grotesk";
+
+  letter-spacing: 1.5px;
+
+  color: #6c787e;
+
+}
+
+.deadline-line span {
+
+  margin-left: 10px;
+
+  color: var(--orange);
+
+}
+
+body.final-call .deadline-line {
+
+  animation:
+    deadlinePulse
+    1.4s ease-in-out
+    infinite;
+
+}
+
+@keyframes deadlinePulse {
+
+  0%,
+  100% {
+    opacity: .55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+}
+
+
+/* ============================================================
+   MESSAGES
+   ============================================================ */
+
+.messages {
+
+  min-height: 90vh;
+
+  padding:
+    16vh
+    clamp(24px, 8vw, 130px);
+
+}
+
+.message-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 1px;
+
+  margin-top: 60px;
+
+  background: var(--line);
+
+}
+
+.message-grid article {
+
+  min-height: 430px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-end;
+
+  padding: 40px;
+
+  background: var(--surface);
+
+  transition:
+    background .35s ease;
+
+}
+
+.message-grid article:hover {
+
+  background: #090d12;
+
+}
+
+.message-grid span {
+
+  font:
+    600 9px
+    "Space Grotesk";
+
+  letter-spacing: 2px;
+
+  color: var(--cyan);
+
+}
+
+.message-grid h2 {
+
+  margin:
+    18px 0;
+
+  font:
+    700 clamp(40px, 6vw, 76px)/.86
+    "Space Grotesk";
+
+  letter-spacing: -.06em;
+
+}
+
+.message-grid p {
+
+  max-width: 420px;
+
+  margin: 0;
+
+  color: #8e9aa0;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+}
+
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+
+.faq-section {
+
+  min-height: 100vh;
+
+  padding:
+    16vh
+    clamp(24px, 8vw, 130px);
+
+  background: #06090d;
+
+}
+
+.section-head {
+
+  max-width: 900px;
+
+}
+
+.section-head > span {
+
+  display: block;
+
+  margin-bottom: 28px;
+
+  font:
+    600 9px
+    "Space Grotesk";
+
+  letter-spacing: 2px;
+
+  color: var(--cyan);
+
+}
+
+.section-head h2 {
+
+  margin: 0;
+
+  font:
+    700 clamp(52px, 8vw, 110px)/.84
+    "Space Grotesk";
+
+  letter-spacing: -.07em;
+
+}
+
+.section-head h2 em {
+
+  display: block;
+
+  color: #68757b;
+
+  font-style: normal;
+
+}
+
+.faq-list {
+
+  margin-top: 75px;
+
+  border-top:
+    1px solid
+    var(--line);
+
+}
+
+.faq-item {
+
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    60px 1fr 30px;
+
+  gap: 20px;
+
+  align-items: start;
+
+  padding:
+    28px 0;
+
+  color: #fff;
+
+  text-align: left;
+
+  background: none;
+
+  border: 0;
+
+  border-bottom:
+    1px solid
+    var(--line);
+
+  transition:
+    padding .35s ease;
+
+}
+
+.faq-item:hover {
+
+  padding-left: 8px;
+
+}
+
+.faq-item > span {
+
+  padding-top: 4px;
+
+  font:
+    600 9px
+    "Space Grotesk";
+
+  color: #56636a;
+
+}
+
+.faq-item h3 {
+
+  margin: 0;
+
+  font:
+    600 clamp(18px, 2.5vw, 30px)
+    "Space Grotesk";
+
+  transition:
+    color .3s ease;
+
+}
+
+.faq-item:hover h3 {
+
+  color: var(--cyan);
+
+}
+
+.faq-item p {
+
+  max-width: 680px;
+
+  max-height: 0;
+
+  margin: 0;
+
+  padding-top: 0;
+
+  overflow: hidden;
+
+  opacity: 0;
+
+  color: #89969b;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+  transition:
+    max-height .45s ease,
+    opacity .35s ease,
+    padding .45s ease;
+
+}
+
+.faq-item.open p {
+
+  max-height: 200px;
+
+  padding-top: 16px;
+
+  opacity: 1;
+
+}
+
+.faq-item > b {
+
+  padding-top: 0;
+
+  font-size: 22px;
+
+  font-weight: 400;
+
+  color: #647178;
+
+  transition:
+    transform .4s ease,
+    color .4s ease;
+
+}
+
+.faq-item.open > b {
+
+  transform:
+    rotate(45deg);
+
+  color: var(--cyan);
+
+}
+
+
+/* ============================================================
+   FINAL CTA / REGISTER
+   ============================================================ */
+
+.final-cta {
+
+  position: relative;
+
+  min-height: 90vh;
+
+  display: grid;
+
+  place-items: center;
+
+  overflow: hidden;
+
+  padding:
+    12vh
+    24px;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(72, 231, 255, .055),
+      transparent 30%
+    ),
+    #05070b;
+
+}
+
+.final-grid {
+
+  position: absolute;
+
+  inset: 0;
+
+  opacity: .16;
+
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.055) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.055) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    80px 80px;
+
+  mask-image:
+    radial-gradient(
+      circle,
+      #000 0%,
+      transparent 70%
+    );
+
+}
+
+.final-content {
+
+  position: relative;
+
+  z-index: 2;
+
+  width: min(
+    100%,
+    1100px
+  );
+
+  text-align: center;
+
+}
+
+.final-content > p {
+
+  margin: 0 0 35px;
+
+  font:
+    600 9px
+    "Space Grotesk";
+
+  letter-spacing: 2.5px;
+
+  color: var(--cyan);
+
+}
+
+.final-content h2,
+.final-content h3 {
+
+  margin: 0;
+
+  font:
+    800 clamp(55px, 10vw, 150px)/.78
+    "Syne";
+
+  letter-spacing: -.075em;
+
+}
+
+.final-content h2 span,
+.final-content h3 span {
+
+  display: block;
+
+}
+
+.final-content h2 span {
+
+  background:
+    linear-gradient(
+      90deg,
+      #eef5f7,
+      var(--cyan),
+      var(--orange)
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+
+}
+
+.final-content h3 {
+
+  margin-top: 8px;
+
+  color: #657178;
+
+}
+
+.magnetic-cta {
+
+  position: relative;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  width: 260px;
+
+  margin-top: 55px;
+
+  padding:
+    20px 22px;
+
+  overflow: hidden;
+
+  color: #fff;
+
+  border:
+    1px solid
+    rgba(255,255,255,.2);
+
+  transition:
+    transform .25s ease,
+    border-color .35s ease;
+
+}
+
+.magnetic-cta::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(72,231,255,.16),
+      rgba(255,122,56,.16)
+    );
+
+  transform:
+    translateX(-100%);
+
+  transition:
+    transform .5s ease;
+
+}
+
+.magnetic-cta:hover {
+
+  border-color:
+    rgba(72,231,255,.6);
+
+}
+
+.magnetic-cta:hover::before {
+
+  transform:
+    translateX(0);
+
+}
+
+.magnetic-cta span,
+.magnetic-cta b {
+
+  position: relative;
+
+  z-index: 2;
+
+}
+
+.magnetic-cta span {
+
+  font:
+    700 10px
+    "Space Grotesk";
+
+  letter-spacing: 2px;
+
+}
+
+.magnetic-cta b {
+
+  font-size: 20px;
+
+  font-weight: 400;
+
+}
+
+.magnetic-cta i {
+
+  position: absolute;
+
+  z-index: 3;
+
+  left: 0;
+
+  bottom: 0;
+
+  width: 0;
+
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--cyan),
+      var(--orange)
+    );
+
+  transition:
+    width .5s ease;
+
+}
+
+.magnetic-cta:hover i {
+
+  width: 100%;
+
+}
+
+.final-content small {
+
+  display: block;
+
+  margin-top: 22px;
+
+  font:
+    600 9px
+    "Space Grotesk";
+
+  letter-spacing: 1.7px;
+
+  color: #647178;
+
+}
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+footer {
+
+  position: relative;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 25px;
+
+  padding:
+    45px
+    clamp(24px, 4vw, 64px);
+
+  background: #05070b;
+
+  border-top:
+    1px solid
+    var(--line);
+
+}
+
+footer strong {
+
+  font:
+    700 22px
+    "Space Grotesk";
+
+}
+
+footer strong span {
+
+  color: var(--cyan);
+
+}
+
+footer small {
+
+  display: block;
+
+  margin-top: 10px;
+
+  color: #6f7b81;
+
+  font-size: 10px;
+
+}
+
+footer a {
+
+  font:
+    600 11px
+    "Space Grotesk";
+
+  letter-spacing: 1px;
+
+  color: #aab5ba;
+
+  transition:
+    color .25s ease;
+
+}
+
+footer a:hover {
+
+  color: var(--cyan);
+
+}
+
+
+/* ============================================================
+   SCROLL REVEAL STATE
+   ============================================================ */
+
+.mission,
+.battle,
+.messages,
+.countdown-section,
+.faq-section,
+.register,
+.final-cta {
+
+  transform:
+    translate3d(
+      0,
+      24px,
+      0
+    );
+
+  opacity: .62;
+
+}
+
+.page-ready
+.mission,
+.page-ready
+.battle,
+.page-ready
+.messages,
+.page-ready
+.countdown-section,
+.page-ready
+.faq-section,
+.page-ready
+.register,
+.page-ready
+.final-cta {
+
+  transition:
+    opacity .25s linear,
+    transform .25s linear;
+
+}
+
+
+/* ============================================================
+   REGISTRATION CLOSED
+   ============================================================ */
+
+.registration-closed
+.magnetic-cta {
+
+  opacity: .55;
+
+}
+
+.registration-closed
+.magnetic-cta span {
+
+  font-size: 0;
+
+}
+
+.registration-closed
+.magnetic-cta span::after {
+
+  content:
+    "REGISTRATION CLOSED";
+
+  font-size: 9px;
+
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLET
+   ============================================================ */
+
+@media (max-width: 1000px) {
+
+  .nav-links {
+
+    gap: 20px;
+
+  }
+
+  .hero-copy {
+
+    max-width: 620px;
+
+  }
+
+  .countdown-layout {
+
+    grid-template-columns: 1fr;
+
+    gap: 55px;
+
+  }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+
+@media (max-width: 760px) {
+
+  html {
+
+    scroll-behavior: auto;
+
+  }
+
+
+  /* NAV */
+
+  .nav {
+
+    height: 66px;
+
+    padding:
+      0 20px;
+
+  }
+
+  .nav.scrolled {
+
+    height: 60px;
+
+  }
+
+  .nav-links {
+
+    display: none;
+
+  }
+
+  .menu {
+
+    display: flex;
+
+  }
+
+
+  /* HERO */
+
+  .hero {
+
+    height: 180vh;
+
+  }
+
+  .hero-hud {
+
+    top: 84px;
+
+    left: 22px;
+
+    right: 22px;
+
+  }
+
+  .hero-copy {
+
+    top: 47%;
+
+    left: 22px;
+
+    right: 22px;
+
+    max-width: none;
+
+  }
+
+  .hero-copy::after {
+
+    left: -12px;
+
+    top: 30px;
+
+    height: 105px;
+
+  }
+
+  .hero-copy h1
+  .robo-word {
+
+    font-size:
+      clamp(
+        42px,
+        13vw,
+        72px
+      );
+
+  }
+
+  .hero-copy h1
+  .kriti-word {
+
+    font-size:
+      clamp(
+        72px,
+        23vw,
+        120px
+      );
+
+  }
+
+  .hero-copy h1 em {
+
+    margin-top: 21px;
+
+    font-size: 17px;
+
+    letter-spacing: .25em;
+
+  }
+
+  .title-rule {
+
+    font-size: 7px;
+
+  }
+
+  .subline {
+
+    max-width: 360px;
+
+    font-size: 11px;
+
+  }
+
+  .hero-actions {
+
+    flex-wrap: wrap;
+
+  }
+
+  .hero-data {
+
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap:
+      15px 20px;
+
+    bottom: 22px;
+
+  }
+
+  .scroll-cue {
+
+    display: none;
+
+  }
+
+  .frame-counter {
+
+    top: auto;
+
+    right: 22px;
+
+    bottom: 145px;
+
+  }
+
+
+  /* GENERAL SECTIONS */
+
+  .mission,
+  .battle,
+  .messages,
+  .countdown-section,
+  .faq-section,
+  .register,
+  .final-cta {
+
+    padding:
+      13vh 22px;
+
+  }
+
+
+  /* MISSION */
+
+  .mission {
+
+    min-height: 75vh;
+
+    grid-template-columns: 1fr;
+
+    gap: 40px;
+
+  }
+
+  .mission > p:last-child {
+
+    align-self: auto;
+
+  }
+
+
+  /* BATTLE */
+
+  .battle {
+
+    min-height: auto;
+
+  }
+
+  .battle h2 {
+
+    margin:
+      40px 0;
+
+  }
+
+  .discipline-list article {
+
+    min-height: 95px;
+
+    grid-template-columns:
+      40px 1fr;
+
+  }
+
+  .discipline-list span {
+
+    display: none;
+
+  }
+
+  .discipline-list article:hover {
+
+    padding-left: 8px;
+
+  }
+
+
+  /* COUNTDOWN */
+
+  .countdown-layout {
+
+    gap: 45px;
+
+    margin-top: 55px;
+
+  }
+
+  .countdown-copy h2 {
+
+    font-size:
+      clamp(
+        70px,
+        20vw,
+        110px
+      );
+
+  }
+
+  .countdown-clock {
+
+    gap: 9px;
+
+  }
+
+  .countdown-clock strong {
+
+    font-size:
+      clamp(
+        25px,
+        8vw,
+        45px
+      );
+
+  }
+
+  .countdown-clock i {
+
+    font-size: 17px;
+
+  }
+
+
+  /* MESSAGES */
+
+  .message-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+  .message-grid article {
+
+    min-height: 330px;
+
+    padding: 28px;
+
+  }
+
+
+  /* FAQ */
+
+  .faq-list {
+
+    margin-top: 55px;
+
+  }
+
+  .faq-item {
+
+    grid-template-columns:
+      35px 1fr 25px;
+
+    gap: 10px;
+
+    padding:
+      24px 0;
+
+  }
+
+  .faq-item h3 {
+
+    font-size: 18px;
+
+  }
+
+  .faq-item p {
+
+    font-size: 12px;
+
+  }
+
+
+  /* FINAL CTA */
+
+  .final-content h2,
+  .final-content h3 {
+
+    font-size:
+      clamp(
+        48px,
+        14vw,
+        80px
+      );
+
+  }
+
+  .magnetic-cta {
+
+    width:
+      min(
+        100%,
+        260px
+      );
+
+  }
+
+
+  /* FOOTER */
+
+  footer {
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    padding:
+      38px 22px;
+
+  }
+
+}
+
+
+/* ============================================================
+   VERY SMALL PHONES
+   ============================================================ */
+
+@media (max-width: 380px) {
+
+  .hero-copy h1
+  .kriti-word {
+
+    font-size: 68px;
+
+  }
+
+  .hero-copy h1 em {
+
+    font-size: 13px;
+
+  }
+
+  .hero-data strong {
+
+    font-size: 9px;
+
+  }
+
+  .countdown-clock {
+
+    gap: 5px;
+
+  }
+
+  .countdown-clock strong {
+
+    font-size: 24px;
+
+  }
+
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+
+    animation-duration: .01ms !important;
+
+    animation-iteration-count: 1 !important;
+
+    scroll-behavior: auto !important;
+
+    transition-duration: .01ms !important;
+
+  }
+
+  .hero-copy,
+  .hero-data,
+  .mission,
+  .battle,
+  .messages,
+  .countdown-section,
+  .faq-section,
+  .register,
+  .final-cta {
+
+    transform: none !important;
+
+    opacity: 1 !important;
+
+  }
+
+}
